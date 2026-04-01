@@ -1,0 +1,50 @@
+# Залежності (найважливіше!)
+node_modules/
+.pnp
+.pnp.js
+
+# Збірка (Production build)
+dist/
+build/
+out/
+.next/
+
+# Логи
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Секрети та змінні оточення
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+*.env.bak
+
+# Редактори (VS Code, JetBrains)
+.vscode/*
+!.vscode/extensions.json
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Тестування
+/coverage
+.nyc_output
+
+# Тимчасові файли та кеш
+.eslintcache
+.stylelintcache
+.cache/
+.parcel-cache/
+.next/
+.turbo/
+
+# OS-специфічні файли
+.DS_Store
+Thumbs.db
