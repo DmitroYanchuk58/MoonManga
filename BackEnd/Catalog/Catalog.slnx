@@ -1,3 +1,4 @@
 <Solution>
-  <Project Path="Catalog.csproj" />
+  <Project Path="../DatabaseAccessLayer/DatabaseAccessLayer.csproj" Id="8d784431-2f7e-4b31-a630-eeb9a165a4b8" />
+  <Project Path="API.csproj" />
 </Solution>
