@@ -1,4 +1,5 @@
 ﻿using BusinessLogicLayer.DTOs;
+using BusinessLogicLayer.Validation;
 using DatabaseAccessLayer.DatabaseContext;
 using DatabaseAccessLayer.Entities;
 using DatabaseAccessLayer.Repositories;
@@ -15,7 +16,16 @@ namespace BusinessLogicLayer.Services
 
         public async Task CreateReadItemAsync(ReadItemDTO item)
         {
-            throw new NotImplementedException();
+            var validator = new ReadItemValidator();
+            var validationResult = await validator.ValidateAsync(item);
+            ArgumentNullException.ThrowIfNull(item.Title, nameof(item.Title));
+            ArgumentNullException.ThrowIfNull(item.Type, nameof(item.Type));
+            if (!validationResult.IsValid)
+            {
+                var errors = string.Join(", ", validationResult.Errors.Select(e => e.ErrorMessage));
+                throw new ArgumentException($"Validation error: {errors}");
+            }
+            await _repository.CreateAsync(item.ToReadItem());
         }
 
         public async Task<ReadItemDTO> GetReadItemByIdAsync(Guid id)
