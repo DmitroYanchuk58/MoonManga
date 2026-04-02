@@ -30,12 +30,22 @@ namespace BusinessLogicLayer.Services
 
         public async Task<ReadItemDTO> GetReadItemByIdAsync(Guid id)
         {
-            throw new NotImplementedException();
+            var readItem = await _repository.GetByIdAsync(id);
+            if (readItem == null)
+            {
+                throw new KeyNotFoundException();
+            }
+
+            return new ReadItemDTO(readItem);
         }
 
         public async Task<List<ReadItemDTO>> GetAllReadItemsAsync()
         {
-            throw new NotImplementedException();
+            var readItems = await _repository.GetAllAsync();
+            var items = readItems
+                            .Select(r => new ReadItemDTO(r))
+                            .ToList();
+            return items;
         }
 
         public async Task UpdateReadItemAsync(ReadItemDTO item)
