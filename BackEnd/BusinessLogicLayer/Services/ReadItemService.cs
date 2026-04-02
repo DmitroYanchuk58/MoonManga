@@ -55,7 +55,11 @@ namespace BusinessLogicLayer.Services
 
         public async Task DeleteReadItemAsync(Guid id)
         {
-            throw new NotImplementedException();
+            if(id == Guid.Empty)
+            {
+                throw new ArgumentException(nameof(id));
+            }
+            await _repository.DeleteAsync(id);
         }
     }
 }

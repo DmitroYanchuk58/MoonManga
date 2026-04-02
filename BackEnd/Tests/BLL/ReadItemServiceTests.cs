@@ -142,6 +142,49 @@ namespace Tests.BLL
             Assert.Equal(50, result.Count());
         }
 
+        [Fact]
+        public async Task DeleteAsync_ExistingItem_ShouldRemoveFromDatabase()
+        {
+            // Arrange
+            using var context = GetDbContext();
+            var service = new ReadItemService(context);
+            var item = new ReadItem { Id = Guid.NewGuid(), Title = "To Delete", Type = "Manga" };
+            context.ReadItems.Add(item);
+            await context.SaveChangesAsync();
 
+            // Act
+            await service.DeleteReadItemAsync(item.Id);
+            var deletedItem = await context.ReadItems.FindAsync(item.Id);
+
+            // Assert
+            Assert.Null(deletedItem); 
+        }
+
+        [Fact]
+        public async Task DeleteAsync_NotEsixtingItem_ShouldNotThrow()
+        {
+            // Arrange
+            using var context = GetDbContext();
+            var service = new ReadItemService(context);
+
+            // Act
+            var exception = await Record.ExceptionAsync(async () =>
+                await service.DeleteReadItemAsync(Guid.NewGuid())
+            );
+
+            // Assert
+            Assert.Null(exception); 
+        }
+
+        [Fact]
+        public async Task DeleteAsync_NullId_ShouldThrow()
+        {
+            // Arrange
+            using var context = GetDbContext();
+            var service = new ReadItemService(context);
+
+            // Act
+            await Assert.ThrowsAsync<ArgumentException>(() => service.DeleteReadItemAsync(Guid.Empty));
+        }
     }
 }
