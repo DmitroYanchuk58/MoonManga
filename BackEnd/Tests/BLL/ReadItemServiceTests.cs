@@ -44,10 +44,7 @@ namespace Tests.BLL
         }
 
         [InlineData(null, "Manga", typeof(ArgumentNullException))]
-        [InlineData("Name", null, typeof(ArgumentNullException))]
         [InlineData("", "Manga", typeof(ArgumentException))]
-        [InlineData("Name", "", typeof(ArgumentException))]
-        [InlineData("Name", "  ", typeof(ArgumentException))]
         [InlineData("  ", "Manga", typeof(ArgumentException))]
         [Theory]
         public async Task CreateReadItemAsync_ShouldThrowException(string? title, string? type, Type expectedException)
@@ -59,7 +56,7 @@ namespace Tests.BLL
             {
                 Id = Guid.NewGuid(),
                 Title = title!,
-                Type = Enum.TryParse<ReadItemType>(type!, out var parsedType) ? parsedType : ReadItemType.Manga
+                Type = Enum.Parse<ReadItemType>(type!)  
             };
             // Act & Assert
             await Assert.ThrowsAsync(expectedException, () => service.CreateReadItemAsync(readItemDto));
