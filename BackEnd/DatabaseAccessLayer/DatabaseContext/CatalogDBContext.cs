@@ -13,19 +13,22 @@ namespace DatabaseAccessLayer.DatabaseContext
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<ReadItem>().ToTable("ReadItems");
+            modelBuilder.Entity<ReadItem>(entity =>
+            {
+                entity.ToTable("ReadItems");
 
-            modelBuilder.Entity<ReadItem>()
-                .HasKey(b => b.Id);
+                entity.HasKey(b => b.Id);
 
-            modelBuilder.Entity<ReadItem>()
-            .Property(b => b.Title)
-            .HasMaxLength(100)
-            .IsRequired();
+                entity.Property(b => b.Title)
+                    .IsRequired()
+                    .HasMaxLength(100);
 
-            modelBuilder.Entity<ReadItem>()
-                .Property(b => b.Type)
-                .IsRequired();
+                entity.Property(b => b.Type)
+                    .IsRequired();
+
+                entity.ToTable(t => t.HasCheckConstraint("CK_ReadItem_Title_NotEmpty", "LEN(TRIM(Title)) > 0"));
+                entity.ToTable(t => t.HasCheckConstraint("CK_ReadItem_Type_NotEmpty", "LEN(TRIM(Type)) > 0"));
+            });
         }
     }
 }
