@@ -3,9 +3,13 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DatabaseAccessLayer.DatabaseContext
 {
-    public class DatabaseContext : DbContext
+    public class CatalogDBContext : DbContext
     {
         public DbSet<ReadItem> ReadItems { get; set; }
+
+        public CatalogDBContext(DbContextOptions<CatalogDBContext> options) : base(options)
+        {
+        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
