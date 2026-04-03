@@ -32,10 +32,14 @@ namespace BusinessLogicLayer.Services
 
         public async Task<ReadItemDTO> GetReadItemByIdAsync(Guid id)
         {
+            if(id == Guid.Empty)
+            {
+                throw new ArgumentException("Invalid identifier. Guid cannot be empty.", nameof(id));
+            }
             var readItem = await _readItemRepository.GetByIdAsync(id);
             if (readItem == null)
             {
-                throw new KeyNotFoundException();
+                throw new KeyNotFoundException($"ReadItem with ID {id} was not found.");
             }
 
             return new ReadItemDTO(readItem);

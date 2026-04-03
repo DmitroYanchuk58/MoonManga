@@ -98,6 +98,30 @@ namespace Tests.BLL
         }
 
         [Fact]
+        public async Task GetItemByIdAsync_GetWithNullId_ShouldThrowArgumentException()
+        {
+            // Arrange
+            using var context = GetDbContext();
+            var service = new ReadItemService(context);
+            // Act & Assert
+            await Assert.ThrowsAsync<ArgumentException>(async () =>
+                await service.GetReadItemByIdAsync(Guid.Empty)
+            );
+        }
+
+        [Fact]
+        public async Task GetItemByIdAsync_GetWithNull_ShouldThrowArgumentNullException()
+        {
+            // Arrange
+            using var context = GetDbContext();
+            var service = new ReadItemService(context);
+            // Act & Assert
+            await Assert.ThrowsAsync<ArgumentNullException>(async () =>
+                await service.GetReadItemByIdAsync(Guid.Parse(null!))
+            );
+        }
+
+        [Fact]
         public async Task GetAllItemsAsync_ShouldReturnAllItemsFromDatabase()
         {
             // Arrange
