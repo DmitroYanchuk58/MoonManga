@@ -1,4 +1,7 @@
+using BusinessLogicLayer.Services;
+using BusinessLogicLayer.Services.Interfaces;
 using DatabaseAccessLayer.DatabaseContext;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -10,6 +13,8 @@ builder.Services.AddControllers();
 builder.Services.AddOpenApi();
 builder.Services.AddDbContext<CatalogDBContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("CatalogDB")));
+
+builder.Services.AddScoped<IReadItemService, ReadItemService>();
 
 var app = builder.Build();
 
