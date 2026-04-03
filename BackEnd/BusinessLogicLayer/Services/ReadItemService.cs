@@ -9,10 +9,12 @@ namespace BusinessLogicLayer.Services
 {
     public class ReadItemService
     {
-        private ICRUD<ReadItem> _repository;
+        private ICRUD<ReadItem> _readItemRepository;
+        private IExist<ReadItem> _existRepository;
         public ReadItemService(CatalogDBContext context)
         {
-            _repository = new CrudRepository<ReadItem>(context);
+            _readItemRepository = new CrudRepository<ReadItem>(context);
+            _existRepository = new ExistRepository<ReadItem>(context);
         }
 
         public async Task CreateReadItemAsync(ReadItemDTO item)
@@ -25,12 +27,12 @@ namespace BusinessLogicLayer.Services
                 var errors = string.Join(", ", validationResult.Errors.Select(e => e.ErrorMessage));
                 throw new ArgumentException($"Validation error: {errors}");
             }
-            await _repository.CreateAsync(item.ToReadItem());
+            await _readItemRepository.CreateAsync(item.ToReadItem());
         }
 
         public async Task<ReadItemDTO> GetReadItemByIdAsync(Guid id)
         {
-            var readItem = await _repository.GetByIdAsync(id);
+            var readItem = await _readItemRepository.GetByIdAsync(id);
             if (readItem == null)
             {
                 throw new KeyNotFoundException();
@@ -41,7 +43,7 @@ namespace BusinessLogicLayer.Services
 
         public async Task<List<ReadItemDTO>> GetAllReadItemsAsync()
         {
-            var readItems = await _repository.GetAllAsync();
+            var readItems = await _readItemRepository.GetAllAsync();
             var items = readItems
                             .Select(r => new ReadItemDTO(r))
                             .ToList();
@@ -50,32 +52,21 @@ namespace BusinessLogicLayer.Services
 
         public async Task UpdateReadItemAsync(ReadItemDTO item)
         {
-            if(item == null)
+            ArgumentNullException.ThrowIfNull(item);
+            var validator = new ReadItemValidator();
+
+            var validationResult = await validator.ValidateAsync(item);
+            if (!validationResult.IsValid)
             {
-                throw new ArgumentNullException(nameof(item));
+                throw new ValidationException(validationResult.Errors.ToString()); 
             }
 
-            var userFromDb = await _repository.GetByIdAsync(item.Id);
-            if (userFromDb == null)
+            if (!await _existRepository.ExistAsync(item.Id))
             {
                 throw new KeyNotFoundException($"ReadItem with id {item.Id} not found");
             }
 
-            if (!Enum.IsDefined(typeof(ReadItemType), item.Type))
-            {
-                throw new ArgumentException($"Value {item.Type} is not a valid ReadItemType");
-            }
-
-            var validator = new ReadItemValidator();
-            var validationResult = await validator.ValidateAsync(item);
-            ArgumentNullException.ThrowIfNull(item.Title, nameof(item.Title));
-            if (!validationResult.IsValid)
-            {
-                var errors = string.Join(", ", validationResult.Errors.Select(e => e.ErrorMessage));
-                throw new ArgumentException($"Validation error: {errors}");
-            }
-
-            await _repository.UpdateAsync(item.ToReadItem());
+            await _readItemRepository.UpdateAsync(item.ToReadItem());
         }
 
         public async Task DeleteReadItemAsync(Guid id)
@@ -84,7 +75,7 @@ namespace BusinessLogicLayer.Services
             {
                 throw new ArgumentException(nameof(id));
             }
-            await _repository.DeleteAsync(id);
+            await _readItemRepository.DeleteAsync(id);
         }
     }
 }
