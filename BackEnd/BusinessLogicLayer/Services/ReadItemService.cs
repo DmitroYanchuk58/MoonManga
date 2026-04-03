@@ -4,7 +4,7 @@ using BusinessLogicLayer.Validation;
 using DatabaseAccessLayer.DatabaseContext;
 using DatabaseAccessLayer.Entities;
 using DatabaseAccessLayer.Repositories;
-using System.ComponentModel.DataAnnotations;
+using FluentValidation;
 
 namespace BusinessLogicLayer.Services
 {
@@ -26,7 +26,7 @@ namespace BusinessLogicLayer.Services
             var validationResult = await validator.ValidateAsync(item);
             if (!validationResult.IsValid)
             {
-                throw new ValidationException(validationResult.Errors.ToString());
+                throw new ValidationException(validationResult.Errors);
             }
 
             if (await _existRepository.ExistAsync(item.Id))

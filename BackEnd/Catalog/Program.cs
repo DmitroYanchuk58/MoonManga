@@ -1,3 +1,4 @@
+using API.Middleware;
 using BusinessLogicLayer.Services;
 using BusinessLogicLayer.Services.Interfaces;
 using DatabaseAccessLayer.DatabaseContext;
@@ -13,13 +14,16 @@ builder.Services.AddOpenApi();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-
 builder.Services.AddDbContext<CatalogDBContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("CatalogDB")));
 
 builder.Services.AddScoped<IReadItemService, ReadItemService>();
 
+builder.Logging.AddConsole();
+
 var app = builder.Build();
+
+app.UseMiddleware<ExceptionHandlingMiddleware>();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
