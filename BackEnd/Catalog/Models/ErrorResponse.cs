@@ -1,6 +1,4 @@
-﻿using System.Collections;
-
-namespace API.Models
+﻿namespace API.Models
 {
     public class ErrorResponse
     {
