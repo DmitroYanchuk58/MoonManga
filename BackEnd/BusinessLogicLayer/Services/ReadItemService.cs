@@ -1,4 +1,5 @@
 ﻿using BusinessLogicLayer.DTOs;
+using BusinessLogicLayer.Services.Interfaces;
 using BusinessLogicLayer.Validation;
 using DatabaseAccessLayer.DatabaseContext;
 using DatabaseAccessLayer.Entities;
@@ -7,7 +8,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace BusinessLogicLayer.Services
 {
-    public class ReadItemService
+    public class ReadItemService : IReadItemService
     {
         private ICRUD<ReadItem> _readItemRepository;
         private IExist<ReadItem> _existRepository;
