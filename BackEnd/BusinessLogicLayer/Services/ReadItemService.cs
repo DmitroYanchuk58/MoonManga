@@ -3,6 +3,7 @@ using BusinessLogicLayer.Validation;
 using DatabaseAccessLayer.DatabaseContext;
 using DatabaseAccessLayer.Entities;
 using DatabaseAccessLayer.Repositories;
+using System.ComponentModel.DataAnnotations;
 
 namespace BusinessLogicLayer.Services
 {
@@ -19,7 +20,6 @@ namespace BusinessLogicLayer.Services
             var validator = new ReadItemValidator();
             var validationResult = await validator.ValidateAsync(item);
             ArgumentNullException.ThrowIfNull(item.Title, nameof(item.Title));
-            ArgumentNullException.ThrowIfNull(item.Type, nameof(item.Type));
             if (!validationResult.IsValid)
             {
                 var errors = string.Join(", ", validationResult.Errors.Select(e => e.ErrorMessage));
@@ -50,7 +50,32 @@ namespace BusinessLogicLayer.Services
 
         public async Task UpdateReadItemAsync(ReadItemDTO item)
         {
-            throw new NotImplementedException();
+            if(item == null)
+            {
+                throw new ArgumentNullException(nameof(item));
+            }
+
+            var userFromDb = await _repository.GetByIdAsync(item.Id);
+            if (userFromDb == null)
+            {
+                throw new KeyNotFoundException($"ReadItem with id {item.Id} not found");
+            }
+
+            if (!Enum.IsDefined(typeof(ReadItemType), item.Type))
+            {
+                throw new ArgumentException($"Value {item.Type} is not a valid ReadItemType");
+            }
+
+            var validator = new ReadItemValidator();
+            var validationResult = await validator.ValidateAsync(item);
+            ArgumentNullException.ThrowIfNull(item.Title, nameof(item.Title));
+            if (!validationResult.IsValid)
+            {
+                var errors = string.Join(", ", validationResult.Errors.Select(e => e.ErrorMessage));
+                throw new ArgumentException($"Validation error: {errors}");
+            }
+
+            await _repository.UpdateAsync(item.ToReadItem());
         }
 
         public async Task DeleteReadItemAsync(Guid id)

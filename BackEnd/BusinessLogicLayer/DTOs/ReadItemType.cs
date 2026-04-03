@@ -2,11 +2,11 @@
 {
     public enum ReadItemType
     {
-        Manga,
-        Manhwa,
-        Manhua,
-        Novel,
-        Comic,
-        Other
+        Manga = 1,
+        Manhwa = 2,
+        Manhua = 3,
+        Novel = 4,
+        Comic = 5,
+        Other = 6
     }
 }
