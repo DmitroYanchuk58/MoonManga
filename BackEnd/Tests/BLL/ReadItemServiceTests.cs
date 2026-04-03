@@ -4,7 +4,8 @@ using BusinessLogicLayer.Services;
 using DatabaseAccessLayer.DatabaseContext;
 using DatabaseAccessLayer.Entities;
 using Microsoft.EntityFrameworkCore;
-
+using FluentValidation;
+using ValidationException = FluentValidation.ValidationException;
 
 namespace Tests.BLL
 {
@@ -60,7 +61,7 @@ namespace Tests.BLL
                 Type = Enum.Parse<ReadItemType>(type!)
             };
             // Act & Assert
-            await Assert.ThrowsAsync<System.ComponentModel.DataAnnotations.ValidationException>(() => service.CreateReadItemAsync(readItemDto));
+            await Assert.ThrowsAsync<ValidationException>(() => service.CreateReadItemAsync(readItemDto));
         }
 
         [Fact]
@@ -84,7 +85,7 @@ namespace Tests.BLL
                 Type = (ReadItemType)999 
             };
             // Act & Assert
-            await Assert.ThrowsAsync<System.ComponentModel.DataAnnotations.ValidationException>(() => service.CreateReadItemAsync(readItemDto));
+            await Assert.ThrowsAsync<ValidationException>(() => service.CreateReadItemAsync(readItemDto));
         }
 
         [Fact]
@@ -295,7 +296,7 @@ namespace Tests.BLL
             await service.CreateReadItemAsync(readItemDto);
             readItemDto.Title = "";
             // Act & Assert
-            await Assert.ThrowsAsync<System.ComponentModel.DataAnnotations.ValidationException>(() => service.UpdateReadItemAsync(readItemDto));
+            await Assert.ThrowsAsync<ValidationException>(() => service.UpdateReadItemAsync(readItemDto));
         }
 
         [Fact]
@@ -313,7 +314,7 @@ namespace Tests.BLL
             await service.CreateReadItemAsync(readItemDto);
             readItemDto.Title = null!;
             // Act & Assert
-            await Assert.ThrowsAsync<System.ComponentModel.DataAnnotations.ValidationException>(() => service.UpdateReadItemAsync(readItemDto));
+            await Assert.ThrowsAsync<ValidationException>(() => service.UpdateReadItemAsync(readItemDto));
         }
 
         [Fact]
@@ -332,7 +333,7 @@ namespace Tests.BLL
             context.ChangeTracker.Clear();
             readItemDto.Type = (ReadItemType)999; 
             // Act & Assert
-            await Assert.ThrowsAsync<System.ComponentModel.DataAnnotations.ValidationException>(() => service.UpdateReadItemAsync(readItemDto));
+            await Assert.ThrowsAsync<ValidationException>(() => service.UpdateReadItemAsync(readItemDto));
         }
 
         [Fact]
@@ -353,7 +354,7 @@ namespace Tests.BLL
             string tooLongTitle = faker.Random.String2(101);
             readItemDto.Title = tooLongTitle;
             // Act & Assert
-            await Assert.ThrowsAsync<System.ComponentModel.DataAnnotations.ValidationException>(() => service.UpdateReadItemAsync(readItemDto));
+            await Assert.ThrowsAsync<ValidationException>(() => service.UpdateReadItemAsync(readItemDto));
         }
 
         [Fact]
@@ -365,7 +366,5 @@ namespace Tests.BLL
             // Act & Assert
             await Assert.ThrowsAsync<ArgumentNullException>(() => service.UpdateReadItemAsync(null!));
         }
-
-        //make tests for null read item
     }
 }
