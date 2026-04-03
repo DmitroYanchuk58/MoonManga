@@ -57,7 +57,7 @@ namespace Tests.BLL
             {
                 Id = Guid.NewGuid(),
                 Title = title!,
-                Type = Enum.Parse<ReadItemType>(type!)  
+                Type = Enum.Parse<ReadItemType>(type!)
             };
             // Act & Assert
             await Assert.ThrowsAsync(expectedException, () => service.CreateReadItemAsync(readItemDto));
@@ -157,7 +157,7 @@ namespace Tests.BLL
             var deletedItem = await context.ReadItems.FindAsync(item.Id);
 
             // Assert
-            Assert.Null(deletedItem); 
+            Assert.Null(deletedItem);
         }
 
         [Fact]
@@ -173,7 +173,7 @@ namespace Tests.BLL
             );
 
             // Assert
-            Assert.Null(exception); 
+            Assert.Null(exception);
         }
 
         [Fact]
@@ -185,6 +185,119 @@ namespace Tests.BLL
 
             // Act
             await Assert.ThrowsAsync<ArgumentException>(() => service.DeleteReadItemAsync(Guid.Empty));
+        }
+
+        [Fact]
+        public async Task UpdateReadItemAsync_ShouldUpdateReadItem()
+        {
+            // Arrange
+            using var context = GetDbContext();
+            var service = new ReadItemService(context);
+            var readItemDto = new ReadItemDTO
+            {
+                Id = Guid.NewGuid(),
+                Title = "Test Title",
+                Type = ReadItemType.Manga
+            };
+            await service.CreateReadItemAsync(readItemDto);
+            readItemDto.Title = "Updated Title";
+            // Act 
+            await service.UpdateReadItemAsync(readItemDto);
+            var updatedItem = await service.GetReadItemByIdAsync(readItemDto.Id);
+
+            // Assert
+            Assert.Equal("Updated Title", updatedItem.Title);
+            Assert.NotNull(updatedItem);
+        }
+
+        [Fact]
+        public async Task UpdateReadItemAsync_UpdateNotExistedReadItem_ShouldThrowKeyNotFoundException()
+        {
+            // Arrange
+            using var context = GetDbContext();
+            var service = new ReadItemService(context);
+            var readItemDto = new ReadItemDTO
+            {
+                Id = Guid.NewGuid(),
+                Title = "Test Title",
+                Type = ReadItemType.Manga
+            };
+            // Act & Assert
+            await Assert.ThrowsAsync<KeyNotFoundException>(() => service.UpdateReadItemAsync(readItemDto));
+        }
+
+        [Fact]
+        public async Task UpdateReadItemAsync_UpdateWithInvalidData_ShouldThrowArgumentException()
+        {
+            // Arrange
+            using var context = GetDbContext();
+            var service = new ReadItemService(context);
+            var readItemDto = new ReadItemDTO
+            {
+                Id = Guid.NewGuid(),
+                Title = "Test Title",
+                Type = ReadItemType.Manga
+            };
+            await service.CreateReadItemAsync(readItemDto);
+            readItemDto.Title = "";
+            // Act & Assert
+            await Assert.ThrowsAsync<ArgumentException>(() => service.UpdateReadItemAsync(readItemDto));
+        }
+
+        [Fact]
+        public async Task UpdateReadItemAsync_UpdateWithNullData_ShouldThrowArgumentNullException()
+        {
+            // Arrange
+            using var context = GetDbContext();
+            var service = new ReadItemService(context);
+            var readItemDto = new ReadItemDTO
+            {
+                Id = Guid.NewGuid(),
+                Title = "Test Title",
+                Type = ReadItemType.Manga
+            };
+            await service.CreateReadItemAsync(readItemDto);
+            readItemDto.Title = null!;
+            // Act & Assert
+            await Assert.ThrowsAsync<ArgumentNullException>(() => service.UpdateReadItemAsync(readItemDto));
+        }
+
+        [Fact]
+        public async Task UpdateReadItemAsync_UpdateWithInvalidType_ShouldThrowArgumentException()
+        {
+            // Arrange
+            using var context = GetDbContext();
+            var service = new ReadItemService(context);
+            var readItemDto = new ReadItemDTO
+            {
+                Id = Guid.NewGuid(),
+                Title = "Test Title",
+                Type = ReadItemType.Manga
+            };
+            await service.CreateReadItemAsync(readItemDto);
+            readItemDto.Type = (ReadItemType)999; 
+            // Act & Assert
+            await Assert.ThrowsAsync<ArgumentException>(() => service.UpdateReadItemAsync(readItemDto));
+        }
+
+        [Fact]
+        public async Task UpdateReadItemAsync_UpdateWithToLongTitle_ShouldThrowArgumentNullException()
+        {
+            // Arrange
+            using var context = GetDbContext();
+            var service = new ReadItemService(context);
+            var readItemDto = new ReadItemDTO
+            {
+                Id = Guid.NewGuid(),
+                Title = "Test Title",
+                Type = ReadItemType.Manga
+            };
+            await service.CreateReadItemAsync(readItemDto);
+            var faker = new Bogus.Faker();
+
+            string exact100 = faker.Random.String2(100);
+            // Act & Assert
+            await Assert.ThrowsAsync<ArgumentException>(() => service.UpdateReadItemAsync(readItemDto));
         }
     }
 }
