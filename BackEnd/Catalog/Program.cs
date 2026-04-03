@@ -17,7 +17,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<CatalogDBContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("CatalogDB")));
 
-
+builder.Services.AddScoped<IReadItemService, ReadItemService>();
 
 var app = builder.Build();
 
