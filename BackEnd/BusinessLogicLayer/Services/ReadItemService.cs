@@ -19,14 +19,20 @@ namespace BusinessLogicLayer.Services
 
         public async Task CreateReadItemAsync(ReadItemDTO item)
         {
+            ArgumentNullException.ThrowIfNull(item);
+
             var validator = new ReadItemValidator();
             var validationResult = await validator.ValidateAsync(item);
-            ArgumentNullException.ThrowIfNull(item.Title, nameof(item.Title));
             if (!validationResult.IsValid)
             {
-                var errors = string.Join(", ", validationResult.Errors.Select(e => e.ErrorMessage));
-                throw new ArgumentException($"Validation error: {errors}");
+                throw new ValidationException(validationResult.Errors.ToString());
             }
+
+            if (await _existRepository.ExistAsync(item.Id))
+            {
+                throw new InvalidOperationException($"Item with ID {item.Id} already exists.");
+            }
+
             await _readItemRepository.CreateAsync(item.ToReadItem());
         }
 
