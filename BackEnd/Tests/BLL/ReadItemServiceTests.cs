@@ -45,11 +45,11 @@ namespace Tests.BLL
             Assert.Equal(readItemDto.Type.ToString(), entity.Type);
         }
 
-        [InlineData(null, "Manga", typeof(ArgumentNullException))]
-        [InlineData("", "Manga", typeof(ArgumentException))]
-        [InlineData("  ", "Manga", typeof(ArgumentException))]
+        [InlineData(null, "Manga")]
+        [InlineData("", "Manga")]
+        [InlineData("  ", "Manga")]
         [Theory]
-        public async Task CreateReadItemAsync_ShouldThrowException(string? title, string? type, Type expectedException)
+        public async Task CreateReadItemAsync_ShouldThrowException(string? title, string? type)
         {
             // Arrange
             var service = new ReadItemService(GetDbContext());
@@ -60,7 +60,31 @@ namespace Tests.BLL
                 Type = Enum.Parse<ReadItemType>(type!)
             };
             // Act & Assert
-            await Assert.ThrowsAsync(expectedException, () => service.CreateReadItemAsync(readItemDto));
+            await Assert.ThrowsAsync<System.ComponentModel.DataAnnotations.ValidationException>(() => service.CreateReadItemAsync(readItemDto));
+        }
+
+        [Fact]
+        public async Task CreateReadItemAsync_ShouldThrowExceptionWithNullReadItem()
+        {
+            // Arrange
+            var service = new ReadItemService(GetDbContext());
+            // Act & Assert
+            await Assert.ThrowsAsync<ArgumentNullException>(() => service.CreateReadItemAsync(null!));
+        }
+
+        [Fact]
+        public async Task CreateReadItemAsync_ShouldThrowExceptionWithInvalidType()
+        {
+            // Arrange
+            var service = new ReadItemService(GetDbContext());
+            var readItemDto = new ReadItemDTO
+            {
+                Id = Guid.NewGuid(),
+                Title = "Test Title",
+                Type = (ReadItemType)999 
+            };
+            // Act & Assert
+            await Assert.ThrowsAsync<System.ComponentModel.DataAnnotations.ValidationException>(() => service.CreateReadItemAsync(readItemDto));
         }
 
         [Fact]
@@ -175,6 +199,8 @@ namespace Tests.BLL
             var item = new ReadItem { Id = Guid.NewGuid(), Title = "To Delete", Type = "Manga" };
             context.ReadItems.Add(item);
             await context.SaveChangesAsync();
+            context.ChangeTracker.Clear();
+
 
             // Act
             await service.DeleteReadItemAsync(item.Id);

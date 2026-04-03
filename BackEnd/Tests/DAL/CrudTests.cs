@@ -140,6 +140,7 @@ namespace Tests.DAL
             var repository = new CrudRepository<ReadItem>(context);
             var readItem = new ReadItem() { Id = Guid.NewGuid(), Title = "Test Title", Type = "Manga" };
             await repository.CreateAsync(readItem);
+            context.ChangeTracker.Clear();
             // Act
             await repository.DeleteAsync(readItem.Id);
             var deletedEntity = await context.ReadItems.FirstOrDefaultAsync(x => x.Id == readItem.Id);
