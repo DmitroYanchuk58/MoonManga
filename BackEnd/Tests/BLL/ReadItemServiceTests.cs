@@ -199,15 +199,19 @@ namespace Tests.BLL
                 Title = "Test Title",
                 Type = ReadItemType.Manga
             };
-            await service.CreateReadItemAsync(readItemDto);
+            await context.ReadItems.AddAsync(readItemDto.ToReadItem());
+            await context.SaveChangesAsync();
+            context.ChangeTracker.Clear();
             readItemDto.Title = "Updated Title";
             // Act 
             await service.UpdateReadItemAsync(readItemDto);
-            var updatedItem = await service.GetReadItemByIdAsync(readItemDto.Id);
+            context.ChangeTracker.Clear();
+            var updatedItem = await context.ReadItems
+                .FirstOrDefaultAsync(x => x.Id == readItemDto.Id);
 
             // Assert
-            Assert.Equal("Updated Title", updatedItem.Title);
             Assert.NotNull(updatedItem);
+            Assert.Equal("Updated Title", updatedItem.Title);
         }
 
         [Fact]
@@ -275,6 +279,7 @@ namespace Tests.BLL
                 Type = ReadItemType.Manga
             };
             await service.CreateReadItemAsync(readItemDto);
+            context.ChangeTracker.Clear();
             readItemDto.Type = (ReadItemType)999; 
             // Act & Assert
             await Assert.ThrowsAsync<ArgumentException>(() => service.UpdateReadItemAsync(readItemDto));
@@ -295,9 +300,22 @@ namespace Tests.BLL
             await service.CreateReadItemAsync(readItemDto);
             var faker = new Bogus.Faker();
 
-            string exact100 = faker.Random.String2(100);
+            string tooLongTitle = faker.Random.String2(101);
+            readItemDto.Title = tooLongTitle;
             // Act & Assert
             await Assert.ThrowsAsync<ArgumentException>(() => service.UpdateReadItemAsync(readItemDto));
         }
+
+        [Fact]
+        public async Task UpdateReadItemAsync_UpdateWithNullReadItem_ShouldThrowNullArgumentNullException()
+        {
+            // Arrange
+            using var context = GetDbContext();
+            var service = new ReadItemService(context);
+            // Act & Assert
+            await Assert.ThrowsAsync<ArgumentNullException>(() => service.UpdateReadItemAsync(null!));
+        }
+
+        //make tests for null read item
     }
 }
