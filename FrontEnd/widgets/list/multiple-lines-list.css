@@ -1,0 +1,6 @@
+.multiple-lines-list {
+  width: 100%;
+  padding: 2%;
+  display: flex;
+  gap: 5%;
+}
