@@ -1,0 +1,9 @@
+.manga-card {
+  width: 20%;
+  height: 144px;
+  background-color: aqua;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 20px;
+}
