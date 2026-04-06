@@ -1,35 +1,35 @@
+import { useEffect, useState } from "react";
 import { MultipleLinesList } from "../widgets/list/multiple-lines-list";
 import { type ReadItem } from "../entities/model/read-item/read-item";
-import { ReadItemType } from "../entities/model/read-item/read-item-type";
+import { ReadItemApi } from "../utils/api/read-item-api";
+import "./read-items-page.css";
 
 export const ReadItemsPage = () => {
-  const randomMangas: ReadItem[] = [
-    {
-      id: "1",
-      title: "Berserk",
-      type: ReadItemType.Manga,
-    },
-    {
-      id: "2",
-      title: "Solo Leveling",
-      type: ReadItemType.Manhwa,
-    },
-    {
-      id: "3",
-      title: "Vagabond",
-      type: ReadItemType.Manga,
-    },
-    {
-      id: "4",
-      title: "The Beginning After the End",
-      type: ReadItemType.Manhwa,
-    },
-  ];
+  const [mangas, setMangas] = useState<ReadItem[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchMangas = async () => {
+      try {
+        setIsLoading(true);
+        const data = await ReadItemApi.getAll();
+        setMangas(data);
+      } catch (error) {
+        console.error("Помилка завантаження манги:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchMangas();
+  }, []);
+
+  if (isLoading) return <div>Завантаження...</div>;
 
   return (
-    <div className="page-container">
-      <h1>Мій Список Читання</h1>
-      <MultipleLinesList items={randomMangas} />
+    <div className="page">
+      <h1>Каталог Манги</h1>
+      <MultipleLinesList items={mangas} />
     </div>
   );
 };
