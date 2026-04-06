@@ -7,7 +7,9 @@ interface ReadItemCardProps {
 }
 
 export const ReadItemCard = ({ data }: ReadItemCardProps) => {
-  const typeName = ReadItemType[data.type];
+  const typeName = Object.keys(ReadItemType).find(
+    (key) => ReadItemType[key as keyof typeof ReadItemType] === data.type,
+  );
   return (
     <div className="read-item-card">
       <div className="read-item-image">
@@ -18,7 +20,7 @@ export const ReadItemCard = ({ data }: ReadItemCardProps) => {
           <h3>{data.title}</h3>
         </div>
         <div className="read-item-type">
-          <h4>{data.type}</h4>
+          <h4>{typeName}</h4>
         </div>
       </div>
     </div>
