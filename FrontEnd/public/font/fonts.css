@@ -1,0 +1,10 @@
+@font-face {
+  font-family: "Bricolage";
+  src: url("./BricolageGrotesque.ttf") format("opentype");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+body {
+  font-family: "Bricolage", sans-serif;
+}

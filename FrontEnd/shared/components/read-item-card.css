@@ -1,9 +1,42 @@
-.manga-card {
-  width: 20%;
-  height: 144px;
-  background-color: aqua;
+.read-item-card {
+  width: 100%;
+  height: 100%;
   display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 20px;
+  flex-direction: column;
+}
+
+.read-item-image {
+  width: 100%;
+  height: 80%;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.read-item-image img {
+  width: 100%;
+  height: 100%;
+}
+
+.read-item-info {
+  width: 100%;
+  height: 20%;
+  color: white;
+  overflow: hidden;
+  padding: 2%;
+  display: flex;
+  flex-direction: column;
+}
+.read-item-title {
+  height: 40%;
+  width: 100%;
+}
+.read-item-title h3 {
+  font-size: 22px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.read-item-type {
+  height: 60%;
+  width: 100%;
 }
