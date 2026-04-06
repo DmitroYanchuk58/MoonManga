@@ -36,7 +36,7 @@ namespace API.Controllers
             var item = new ReadItemDTO
             {
                 Title = request.Title,
-                Type = (ReadItemType)Enum.Parse(typeof(ReadItemType), request.Type, true)
+                Type = request.Type,
             };
             await _service.CreateReadItemAsync(item);
             return Ok(item);
