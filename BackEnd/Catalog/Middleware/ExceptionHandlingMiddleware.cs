@@ -31,8 +31,9 @@ namespace API.Middleware
 
         private static Task HandleExceptionAsync(HttpContext context, Exception exception)
         {
-            var statusCode = HttpStatusCode.InternalServerError; 
-            var message = "An unexpected error occurred.";
+            var statusCode = HttpStatusCode.InternalServerError;
+            //TODO: hide the message for production, and log the details instead
+            string message;
             IEnumerable<string>? errors = null;
 
             switch (exception)
@@ -48,9 +49,16 @@ namespace API.Middleware
                     message = exception.Message;
                     break;
 
-                case ArgumentException: 
+                case ArgumentException:
+                    statusCode = HttpStatusCode.BadRequest;
+                    message = "Validation failed.";
+                    break;
                 case InvalidOperationException:
                     statusCode = HttpStatusCode.BadRequest;
+                    message = exception.Message;
+                    break;
+                default:
+                    statusCode = HttpStatusCode.InternalServerError;
                     message = exception.Message;
                     break;
             }

@@ -15,7 +15,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddDbContext<CatalogDBContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("CatalogDB")));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("MoonMangaDBConnection")));
 
 builder.Services.AddScoped<IReadItemService, ReadItemService>();
 
