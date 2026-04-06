@@ -1,4 +1,5 @@
-﻿using BusinessLogicLayer.DTOs;
+﻿using API.DTO;
+using BusinessLogicLayer.DTOs;
 using BusinessLogicLayer.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
@@ -30,8 +31,13 @@ namespace API.Controllers
         }
 
         [HttpPost("CreateReadItem")]
-        public async Task<IActionResult> CreateReadItem([FromBody] ReadItemDTO item)
+        public async Task<IActionResult> CreateReadItem([FromBody] CreateReadItemDTO request)
         {
+            var item = new ReadItemDTO
+            {
+                Title = request.Title,
+                Type = (ReadItemType)Enum.Parse(typeof(ReadItemType), request.Type, true)
+            };
             await _service.CreateReadItemAsync(item);
             return Ok(item);
         }
