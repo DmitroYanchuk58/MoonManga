@@ -18,6 +18,7 @@ builder.Services.AddDbContext<CatalogDBContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("MoonMangaDBConnection")));
 
 builder.Services.AddScoped<IReadItemService, ReadItemService>();
+builder.Services.AddScoped<IChapterService, ChapterService>();
 
 builder.Logging.AddConsole();
 
