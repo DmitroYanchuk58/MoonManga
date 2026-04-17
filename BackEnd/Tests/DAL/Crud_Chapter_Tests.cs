@@ -171,6 +171,7 @@ namespace Tests.DAL
                 Order = 1,
             };
             await repository.CreateAsync(chapter);
+            context.ChangeTracker.Clear();
             // Act
             await repository.DeleteAsync(id);
             var entity = await context.Chapters.FirstOrDefaultAsync(x => x.Id == id);

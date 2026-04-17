@@ -9,23 +9,8 @@ using ValidationException = FluentValidation.ValidationException;
 
 namespace Tests.BLL
 {
-    public class ReadItemServiceTests
+    public class ReadItemServiceTests : ServiceTests
     {
-        private CatalogDBContext GetDbContext()
-        {
-            var connection = new Microsoft.Data.Sqlite.SqliteConnection("Filename=:memory:");
-            connection.Open();
-
-            var options = new DbContextOptionsBuilder<CatalogDBContext>()
-                .UseSqlite(connection)
-                .Options;
-            var context = new CatalogDBContext(options);
-
-            context.Database.EnsureCreated();
-
-            return context;
-        }
-
         [Fact]
         public async Task CreateReadItemAsync_ShouldCreateReadItem()
         {
