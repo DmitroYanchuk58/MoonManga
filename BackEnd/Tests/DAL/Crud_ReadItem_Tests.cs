@@ -11,30 +11,31 @@ namespace Tests.DAL
     public class Crud_ReadItem_Tests : CrudTests
     {
         [Theory]
-        [InlineData(1)]
-        [InlineData(2)]
-        [InlineData(10)]
-        [InlineData(100)]
-        [InlineData(int.MaxValue)]
-        public async Task CreateAsync_Success(int order)
+        [InlineData("Valid Title", "Manga", true)]
+        [InlineData(null, "Manga", false)]
+        [InlineData("Valid Title", null, false)]
+        [InlineData("", "Manga", false)]
+        [InlineData("Valid Title", "", false)]
+        [InlineData("   ", "Manga", false)]
+        [InlineData("Valid Title", "   ", false)]
+        public async Task CreateAsync(string? title, string? type, bool shouldSucceed)
         {
             // Arrange
             using var context = GetDbContext();
-            var repository = new CrudRepository<Chapter>(context);
-            var chapter = new Chapter()
+            var repository = new CrudRepository<ReadItem>(context);
+            var id = Guid.NewGuid();
+            var readItem = new ReadItem()
             {
-                Id = Guid.NewGuid(),
-                Order = order,
+                Id = id,
+                Title = title!,
+                Type = type!
             };
-
-            await repository.CreateAsync(chapter);
-            var entity = await context.Chapters.FirstOrDefaultAsync(x => x.Order == title);
 
             // Act & Assert
             if (shouldSucceed)
             {
                 await repository.CreateAsync(readItem);
-                var entity = await context.ReadItems.FirstOrDefaultAsync(x => x.Title == title);
+                var entity = await context.ReadItems.FirstOrDefaultAsync(x => x.Id == id);
 
                 Assert.NotNull(entity);
                 Assert.Equal(type, entity.Type);
