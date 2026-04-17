@@ -7,6 +7,8 @@ namespace DatabaseAccessLayer.DatabaseContext
     {
         public DbSet<ReadItem> ReadItems { get; set; }
 
+        public DbSet<Chapter> Chapters { get; set; }
+
         public CatalogDBContext(DbContextOptions<CatalogDBContext> options) : base(options)
         {
         }
@@ -32,6 +34,18 @@ namespace DatabaseAccessLayer.DatabaseContext
 
                 entity.ToTable(t => t.HasCheckConstraint("CK_ReadItem_Title_NotEmpty", $"{lengthFunctionName}(TRIM(Title)) > 0"));
                 entity.ToTable(t => t.HasCheckConstraint("CK_ReadItem_Type_NotEmpty", $"{lengthFunctionName}(TRIM(Type)) > 0"));
+            });
+
+            modelBuilder.Entity<Chapter>(entity =>
+            {
+                entity.ToTable("Chapters");
+
+                entity.HasKey(b => b.Id);
+
+                entity.Property(b => b.Order)
+                    .IsRequired();
+
+                entity.ToTable(t => t.HasCheckConstraint("CK_Chapter_Order_Min", "[Order] > 0"));
             });
         }
     }
