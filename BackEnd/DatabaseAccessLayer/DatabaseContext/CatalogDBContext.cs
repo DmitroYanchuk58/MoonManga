@@ -42,9 +42,6 @@ namespace DatabaseAccessLayer.DatabaseContext
 
                 entity.HasKey(b => b.Id);
 
-                entity.Property(b => b.Order)
-                    .IsRequired();
-
                 entity.ToTable(t => t.HasCheckConstraint("CK_Chapter_Order_Min", "[Order] > 0"));
             });
         }
