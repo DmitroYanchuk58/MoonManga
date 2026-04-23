@@ -44,6 +44,8 @@ namespace DatabaseAccessLayer.DatabaseContext
 
                 entity.ToTable(t => t.HasCheckConstraint("CK_Chapter_Order_Min", "[Order] > 0"));
             });
+
+
         }
     }
 }

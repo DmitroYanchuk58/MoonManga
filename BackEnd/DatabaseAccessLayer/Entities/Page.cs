@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace DatabaseAccessLayer.Entities
+﻿namespace DatabaseAccessLayer.Entities
 {
-    public class Page
+    public class Page : Entity
     {
         public int Order { get; set; }
+
+        public byte[] Image {  get; set; }
     }
 }
