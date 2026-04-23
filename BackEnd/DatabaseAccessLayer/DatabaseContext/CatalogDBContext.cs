@@ -9,6 +9,8 @@ namespace DatabaseAccessLayer.DatabaseContext
 
         public DbSet<Chapter> Chapters { get; set; }
 
+        public DbSet<Page> Pages { get; set; }
+
         public CatalogDBContext(DbContextOptions<CatalogDBContext> options) : base(options)
         {
         }
@@ -45,7 +47,12 @@ namespace DatabaseAccessLayer.DatabaseContext
                 entity.ToTable(t => t.HasCheckConstraint("CK_Chapter_Order_Min", "[Order] > 0"));
             });
 
-
+            modelBuilder.Entity<Page>(entity =>
+            {
+                entity.ToTable("Pages");
+                entity.HasKey(b => b.Id);
+                entity.ToTable(t => t.HasCheckConstraint("CK_Page_Image_NotEmpty", "Image IS NOT NULL AND LENGTH(Image) > 0"));
+            });
         }
     }
 }
