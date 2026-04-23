@@ -236,7 +236,7 @@ namespace Tests.BLL
                 Title = "Test Title",
                 Type = ReadItemType.Manga
             };
-            await context.ReadItems.AddAsync(readItemDto.ToReadItem());
+            await context.ReadItems.AddAsync(readItemDto.ConvertToEntity());
             await context.SaveChangesAsync();
             context.ChangeTracker.Clear();
             readItemDto.Title = "Updated Title";
@@ -335,7 +335,7 @@ namespace Tests.BLL
                 Type = ReadItemType.Manga
             };
             await service.CreateReadItemAsync(readItemDto);
-            var faker = new Bogus.Faker();
+            var faker = new Faker();
 
             string tooLongTitle = faker.Random.String2(101);
             readItemDto.Title = tooLongTitle;

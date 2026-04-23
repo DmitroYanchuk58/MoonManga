@@ -28,9 +28,11 @@ namespace BusinessLogicLayer.DTOs
         public PageDTO(Page page) : this(page.Id, page.Order, page.Image)
         {}
 
-        public Page ConvertToEntity()
+        public Page ConvertToEntity() => new Page
         {
-            throw new NotImplementedException();
-        }
+            Id = this.Id,
+            Order = this.Order,
+            Image = this.Image
+        };
     }
 }

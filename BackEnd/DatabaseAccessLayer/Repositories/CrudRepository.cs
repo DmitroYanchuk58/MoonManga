@@ -44,7 +44,7 @@ namespace DatabaseAccessLayer.Repositories
         // DELETE
         public async Task DeleteAsync(Guid id)
         {
-            var entity = await GetByIdAsync(id);
+            var entity = _dbSet.Find(id);
             if (entity != null)
             {
                 _dbSet.Remove(entity);

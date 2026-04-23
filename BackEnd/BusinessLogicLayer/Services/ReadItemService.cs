@@ -34,7 +34,7 @@ namespace BusinessLogicLayer.Services
                 throw new InvalidOperationException($"Item with ID {item.Id} already exists.");
             }
 
-            await _readItemRepository.CreateAsync(item.ToReadItem());
+            await _readItemRepository.CreateAsync(item.ConvertToEntity());
         }
 
         public async Task<ReadItemDTO> GetReadItemByIdAsync(Guid id)
@@ -77,7 +77,7 @@ namespace BusinessLogicLayer.Services
                 throw new KeyNotFoundException($"ReadItem with id {item.Id} not found");
             }
 
-            await _readItemRepository.UpdateAsync(item.ToReadItem());
+            await _readItemRepository.UpdateAsync(item.ConvertToEntity());
         }
 
         public async Task DeleteReadItemAsync(Guid id)

@@ -22,7 +22,7 @@ namespace DatabaseAccessLayer.Repositories
 
         public async Task<bool> ExistAsync(Guid id)
         {
-            return await _context.ReadItems.AnyAsync(x => x.Id == id);
+            return await _dbSet.AnyAsync(x => x.Id == id);
         }
     }
 }
