@@ -50,7 +50,10 @@ namespace DatabaseAccessLayer.DatabaseContext
             modelBuilder.Entity<Page>(entity =>
             {
                 entity.ToTable("Pages");
+
                 entity.HasKey(b => b.Id);
+
+                entity.ToTable(t => t.HasCheckConstraint("CK_Page_Order_Min", "[Order] > 0"));
                 entity.ToTable(t => t.HasCheckConstraint("CK_Page_Image_NotEmpty", "Image IS NOT NULL AND LENGTH(Image) > 0"));
             });
         }
