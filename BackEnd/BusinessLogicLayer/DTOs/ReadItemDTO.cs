@@ -1,8 +1,10 @@
-﻿using DatabaseAccessLayer.Entities;
+﻿using BusinessLogicLayer.DTOs.Enums;
+using BusinessLogicLayer.DTOs.Interfaces;
+using DatabaseAccessLayer.Entities;
 
 namespace BusinessLogicLayer.DTOs
 {
-    public class ReadItemDTO
+    public class ReadItemDTO : IConvertorIntoEntity<ReadItem>
     {
         public Guid Id { get; set; } = Guid.NewGuid();
 
@@ -26,11 +28,11 @@ namespace BusinessLogicLayer.DTOs
         {
         }
 
-        public ReadItem ToReadItem() => new ReadItem
+        public ReadItem ConvertToEntity() => new ReadItem
         {
             Id = this.Id,
             Title = this.Title,
             Type = this.Type.ToString()
-        };    
+        };
     }
 }

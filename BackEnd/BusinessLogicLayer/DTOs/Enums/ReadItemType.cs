@@ -1,4 +1,4 @@
-﻿namespace BusinessLogicLayer.DTOs
+﻿namespace BusinessLogicLayer.DTOs.Enums
 {
     public enum ReadItemType
     {

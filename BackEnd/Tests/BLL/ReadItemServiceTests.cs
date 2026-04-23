@@ -6,6 +6,7 @@ using DatabaseAccessLayer.Entities;
 using Microsoft.EntityFrameworkCore;
 using FluentValidation;
 using ValidationException = FluentValidation.ValidationException;
+using BusinessLogicLayer.DTOs.Enums;
 
 namespace Tests.BLL
 {
