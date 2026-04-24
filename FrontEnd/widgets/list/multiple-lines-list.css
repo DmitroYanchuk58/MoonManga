@@ -1,11 +1,6 @@
 .multiple-lines-list {
-  width: 96%;
+  width: 100%;
   display: grid;
-  grid-template-columns: repeat(
-    auto-fill,
-    minmax(clamp(100px, 20%, 200px), 1fr)
-  );
-  gap: 30px 50px;
-  margin-right: 2%;
-  margin-left: 2%;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 30px 80px;
 }
