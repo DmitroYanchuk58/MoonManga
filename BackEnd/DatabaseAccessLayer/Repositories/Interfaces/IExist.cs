@@ -1,6 +1,6 @@
 ﻿using DatabaseAccessLayer.Entities;
 
-namespace DatabaseAccessLayer.Repositories
+namespace DatabaseAccessLayer.Repositories.Interfaces
 {
     public interface IExist <T> where T : Entity
     {

@@ -4,6 +4,7 @@ using BusinessLogicLayer.Validation;
 using DatabaseAccessLayer.DatabaseContext;
 using DatabaseAccessLayer.Entities;
 using DatabaseAccessLayer.Repositories;
+using DatabaseAccessLayer.Repositories.Interfaces;
 using FluentValidation;
 
 namespace BusinessLogicLayer.Services

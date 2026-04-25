@@ -1,6 +1,6 @@
 ﻿using DatabaseAccessLayer.Entities;
 
-namespace DatabaseAccessLayer.Repositories
+namespace DatabaseAccessLayer.Repositories.Interfaces
 {
     public interface ICRUD<T> where T : Entity
     {

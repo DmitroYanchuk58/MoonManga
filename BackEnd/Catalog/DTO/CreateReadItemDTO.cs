@@ -7,5 +7,7 @@ namespace API.DTO
         public string Title { get; set; }
 
         public ReadItemType Type { get; set; } 
+
+        public byte[] CoverImage { get; set; }
     }
 }

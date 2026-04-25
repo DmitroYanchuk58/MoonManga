@@ -4,6 +4,7 @@ using DatabaseAccessLayer.DatabaseContext;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DatabaseAccessLayer.Migrations
 {
     [DbContext(typeof(CatalogDBContext))]
-    partial class CatalogDBContextModelSnapshot : ModelSnapshot
+    [Migration("20260424205916_AddNewRulesForPage")]
+    partial class AddNewRulesForPage
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -68,12 +71,6 @@ namespace DatabaseAccessLayer.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<byte[]>("CoverImage")
-                        .IsRequired()
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("varbinary(max)")
-                        .HasDefaultValue(new byte[] { 0 });
-
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasMaxLength(100)
@@ -87,8 +84,6 @@ namespace DatabaseAccessLayer.Migrations
 
                     b.ToTable("ReadItems", null, t =>
                         {
-                            t.HasCheckConstraint("CK_ReadItem_CoverImage_NotEmpty", "CoverImage IS NOT NULL AND DATALENGTH(CoverImage) > 0");
-
                             t.HasCheckConstraint("CK_ReadItem_Title_NotEmpty", "LEN(TRIM(Title)) > 0");
 
                             t.HasCheckConstraint("CK_ReadItem_Type_NotEmpty", "LEN(TRIM(Type)) > 0");

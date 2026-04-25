@@ -1,5 +1,6 @@
 ﻿using DatabaseAccessLayer.DatabaseContext;
 using DatabaseAccessLayer.Entities;
+using DatabaseAccessLayer.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;

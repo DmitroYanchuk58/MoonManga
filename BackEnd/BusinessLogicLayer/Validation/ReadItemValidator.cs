@@ -13,8 +13,13 @@ namespace BusinessLogicLayer.Validation
                                                 .Must(t => !string.IsNullOrWhiteSpace(t)).WithMessage("Please write title");
             RuleFor(x => x.Type).NotEmpty().WithMessage("Please choose type of item")
                                                 .Must(t => !string.IsNullOrWhiteSpace(t.ToString())).WithMessage("Please choose type of item")
-                                                .IsInEnum().WithMessage("Please choose a valid type from the list."); 
-
+                                                .IsInEnum().WithMessage("Please choose a valid type from the list.");
+            RuleFor(x => x.CoverImage)
+                        .Cascade(CascadeMode.Stop)
+                        .NotNull()
+                        .WithMessage("Image data must not be null.")
+                        .Must(image => image.Length > 0)
+                        .WithMessage("Image data must not be empty.");
         }
     }
 }

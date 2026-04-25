@@ -34,8 +34,13 @@ namespace DatabaseAccessLayer.DatabaseContext
                 entity.Property(b => b.Type)
                     .IsRequired();
 
+                entity.Property(b => b.CoverImage)
+                    .IsRequired()
+                    .HasDefaultValue(new byte[] { 0x00 }); 
+
                 entity.ToTable(t => t.HasCheckConstraint("CK_ReadItem_Title_NotEmpty", $"{lengthFunctionName}(TRIM(Title)) > 0"));
                 entity.ToTable(t => t.HasCheckConstraint("CK_ReadItem_Type_NotEmpty", $"{lengthFunctionName}(TRIM(Type)) > 0"));
+                entity.ToTable(t => t.HasCheckConstraint("CK_ReadItem_CoverImage_NotEmpty", "CoverImage IS NOT NULL AND DATALENGTH(CoverImage) > 0"));
             });
 
             modelBuilder.Entity<Chapter>(entity =>
@@ -54,7 +59,7 @@ namespace DatabaseAccessLayer.DatabaseContext
                 entity.HasKey(b => b.Id);
 
                 entity.ToTable(t => t.HasCheckConstraint("CK_Page_Order_Min", "[Order] > 0"));
-                entity.ToTable(t => t.HasCheckConstraint("CK_Page_Image_NotEmpty", "Image IS NOT NULL AND LENGTH(Image) > 0"));
+                entity.ToTable(t => t.HasCheckConstraint("CK_Page_Image_NotEmpty", "Image IS NOT NULL AND DATALENGTH(Image) > 0"));
             });
         }
     }

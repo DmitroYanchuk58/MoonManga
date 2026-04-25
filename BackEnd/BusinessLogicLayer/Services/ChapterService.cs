@@ -3,6 +3,7 @@ using BusinessLogicLayer.Services.Interfaces;
 using DatabaseAccessLayer.DatabaseContext;
 using DatabaseAccessLayer.Entities;
 using DatabaseAccessLayer.Repositories;
+using DatabaseAccessLayer.Repositories.Interfaces;
 
 namespace BusinessLogicLayer.Services
 {

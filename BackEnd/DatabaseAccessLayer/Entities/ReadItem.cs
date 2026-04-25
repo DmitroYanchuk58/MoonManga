@@ -5,5 +5,7 @@
         public string Title { get; set; }
         //Gonna be enum on layer higher up, but for now, string is fine
         public string Type { get; set; }
+
+        public byte[] CoverImage { get; set; }
     }
 }

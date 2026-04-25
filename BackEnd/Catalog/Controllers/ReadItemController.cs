@@ -37,6 +37,7 @@ namespace API.Controllers
             {
                 Title = request.Title,
                 Type = request.Type,
+                CoverImage = request.CoverImage,
             };
             await _service.CreateReadItemAsync(item);
             return Ok(item);

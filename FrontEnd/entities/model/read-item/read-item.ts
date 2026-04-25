@@ -4,4 +4,5 @@ export interface ReadItem {
   id: string;
   title: string;
   type: ReadItemType;
+  coverImage: string;
 }
