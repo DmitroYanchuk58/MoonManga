@@ -13,10 +13,12 @@ namespace BusinessLogicLayer.Services
     {
         private ICRUD<ReadItem> _readItemRepository;
         private IExist<ReadItem> _existRepository;
+        private ICollectionProviderRepository<ReadItem> _collectionProvider;
         public ReadItemService(CatalogDBContext context)
         {
             _readItemRepository = new CrudRepository<ReadItem>(context);
             _existRepository = new ExistRepository<ReadItem>(context);
+            _collectionProvider = new CollectionProviderRepository<ReadItem>(context);
         }
 
         public async Task CreateReadItemAsync(ReadItemDTO item)
@@ -88,6 +90,33 @@ namespace BusinessLogicLayer.Services
                 throw new ArgumentException(nameof(id));
             }
             await _readItemRepository.DeleteAsync(id);
+        }
+
+        public async Task<List<ReadItem>> GetReadItemCollection(int collectionNumber, int collectionSize = 30)
+        {
+            if(collectionNumber <= 0)
+            {
+                throw new ArgumentException("Collection number must be greater than zero.", nameof(collectionNumber));
+            }
+            if(collectionSize <= 0)
+            {
+                throw new ArgumentException("Collection size must be greater than zero.", nameof(collectionSize));
+            }
+            return await _collectionProvider.GetItemsCollectionAsync(collectionNumber, collectionSize);
+        }
+
+        public async Task<List<ReadItemDTO>> GetItemsCollectionAsync(int collectionNumber, int collectionSize = 30)
+        {
+            if (collectionNumber <= 0)
+            {
+                throw new ArgumentException("Collection number must be greater than zero.", nameof(collectionNumber));
+            }
+            if (collectionSize <= 0)
+            {
+                throw new ArgumentException("Collection size must be greater than zero.", nameof(collectionSize));
+            }
+            var items = await _collectionProvider.GetItemsCollectionAsync(collectionNumber, collectionSize);
+            return items.Select(item => new ReadItemDTO(item)).ToList();
         }
     }
 }

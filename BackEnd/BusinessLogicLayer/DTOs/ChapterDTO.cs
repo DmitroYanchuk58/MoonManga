@@ -3,10 +3,8 @@ using DatabaseAccessLayer.Entities;
 
 namespace BusinessLogicLayer.DTOs
 {
-    public class ChapterDTO : IConvertorIntoEntity<Chapter>
+    public class ChapterDTO : DTO, IConvertorIntoEntity<Chapter>
     {
-        public Guid Id { get; set; } = Guid.NewGuid();
-
         public int Order { get; set; }
 
         public ChapterDTO() { }

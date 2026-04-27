@@ -1,0 +1,23 @@
+.pagination-btn {
+  width: 8%;
+  max-width: 50px;
+  height: 100%;
+  max-height: 50px;
+  background-color: transparent;
+  border: none;
+  color: var(--text-color);
+  font-weight: 500;
+  font-size: 20px;
+  transition: color 0.5s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.pagination-btn:hover {
+  color: var(--accent-color);
+}
+
+.pagination-btn.active {
+  color: var(--text-accent);
+}

@@ -30,6 +30,13 @@ namespace API.Controllers
             return Ok(readItem);
         }
 
+        [HttpGet("GetReadItemsCollection")]
+        public async Task<IActionResult> GetReadItemsCollection(int collectionNumber, int collectionSize)
+        {
+            var readItems = await _service.GetItemsCollectionAsync(collectionNumber, collectionSize);
+            return Ok(readItems);
+        }
+
         [HttpPost("CreateReadItem")]
         public async Task<IActionResult> CreateReadItem([FromBody] CreateReadItemDTO request)
         {

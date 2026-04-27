@@ -8,10 +8,8 @@ using System.Threading.Tasks;
 
 namespace BusinessLogicLayer.DTOs
 {
-    public class PageDTO : IConvertorIntoEntity<Page>
+    public class PageDTO : DTO, IConvertorIntoEntity<Page>
     {
-        public Guid Id { get; set; } = Guid.NewGuid();
-
         public int Order { get; set; }  
 
         public byte[] Image { get; set; }

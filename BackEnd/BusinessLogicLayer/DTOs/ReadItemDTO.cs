@@ -4,10 +4,8 @@ using DatabaseAccessLayer.Entities;
 
 namespace BusinessLogicLayer.DTOs
 {
-    public class ReadItemDTO : IConvertorIntoEntity<ReadItem>
+    public class ReadItemDTO : DTO, IConvertorIntoEntity<ReadItem>
     {
-        public Guid Id { get; set; } = Guid.NewGuid();
-
         public string Title { get; set; }
 
         public ReadItemType Type { get; set; }

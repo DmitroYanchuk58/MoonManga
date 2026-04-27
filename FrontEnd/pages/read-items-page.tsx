@@ -1,35 +1,45 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { MultipleLinesList } from "../widgets/list/multiple-lines-list";
-import { type ReadItem } from "../entities/model/read-item/read-item";
-import { ReadItemApi } from "../utils/api/read-item-api";
+import { Pagination } from "../widgets/collection/pagination";
+import { MangaCollectionManager } from "../features/MangaCatalogManager";
+import { ReadItem } from "../entities/model/read-item/read-item";
 import "./read-items-page.css";
 
 export const ReadItemsPage = () => {
-  const [mangas, setMangas] = useState<ReadItem[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const collectionManager = useMemo(() => new MangaCollectionManager(), []);
+  const [readItems, setReadItems] = useState<ReadItem[]>([]);
 
   useEffect(() => {
-    const fetchMangas = async () => {
-      try {
-        setIsLoading(true);
-        const data = await ReadItemApi.getAll();
-        setMangas(data);
-      } catch (error) {
-        console.error("Помилка завантаження манги:", error);
-      } finally {
-        setIsLoading(false);
-      }
+    const loadData = async () => {
+      await updateReadItems();
     };
+    loadData();
+  }, [collectionManager]);
 
-    fetchMangas();
-  }, []);
-
-  if (isLoading) return <div>Завантаження...</div>;
+  const updateReadItems = async () => {
+    const data = await collectionManager.getItems();
+    setReadItems(data);
+  };
 
   return (
     <div className="page">
-      <h1>Каталог Манги</h1>
-      <MultipleLinesList items={mangas} />
+      <MultipleLinesList items={readItems} />
+      <Pagination
+        onPageClick={(page) => {
+          collectionManager.setCurrentPageNumber(page);
+          updateReadItems();
+        }}
+        currentPage={collectionManager.getCurrentPageNumber()}
+        maxPageNumber={collectionManager.getPageMaxNumber()}
+        onRightArrowClick={async () => {
+          await collectionManager.moveRight();
+          await updateReadItems();
+        }}
+        onLeftArrowClick={async () => {
+          await collectionManager.moveLeft();
+          await updateReadItems();
+        }}
+      />
     </div>
   );
 };

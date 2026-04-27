@@ -11,4 +11,20 @@ export const ReadItemApi = {
     const response = await api.get<ReadItem>(`/readitem/${id}`);
     return response.data;
   },
+
+  getCollection: async (
+    collectionNumber: number,
+    collectionSize: number,
+  ): Promise<ReadItem[]> => {
+    const response = await api.get<ReadItem[]>(
+      "/ReadItem/GetReadItemsCollection",
+      {
+        params: {
+          collectionNumber,
+          collectionSize,
+        },
+      },
+    );
+    return response.data;
+  },
 };

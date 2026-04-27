@@ -1,5 +1,6 @@
 .multiple-lines-list {
   width: 100%;
+  height: 86%;
   display: grid;
   grid-template-columns: repeat(6, 1fr);
   gap: 30px 80px;
