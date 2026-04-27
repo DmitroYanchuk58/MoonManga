@@ -21,5 +21,10 @@ namespace DatabaseAccessLayer.Repositories
                 .Take(collectionSize)
                 .ToListAsync();
         }
+
+        public async Task<int> GetTotalCountAsync()
+        {
+            return await _context.Set<T>().CountAsync();
+        }
     }
 }

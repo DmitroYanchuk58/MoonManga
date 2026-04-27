@@ -42,7 +42,7 @@ namespace BusinessLogicLayer.Services
 
         public async Task<ReadItemDTO> GetReadItemByIdAsync(Guid id)
         {
-            if(id == Guid.Empty)
+            if (id == Guid.Empty)
             {
                 throw new ArgumentException("Invalid identifier. Guid cannot be empty.", nameof(id));
             }
@@ -72,7 +72,7 @@ namespace BusinessLogicLayer.Services
             var validationResult = await validator.ValidateAsync(item);
             if (!validationResult.IsValid)
             {
-                throw new ValidationException(validationResult.Errors.ToString()); 
+                throw new ValidationException(validationResult.Errors.ToString());
             }
 
             if (!await _existRepository.ExistAsync(item.Id))
@@ -85,7 +85,7 @@ namespace BusinessLogicLayer.Services
 
         public async Task DeleteReadItemAsync(Guid id)
         {
-            if(id == Guid.Empty)
+            if (id == Guid.Empty)
             {
                 throw new ArgumentException(nameof(id));
             }
@@ -94,11 +94,11 @@ namespace BusinessLogicLayer.Services
 
         public async Task<List<ReadItem>> GetReadItemCollection(int collectionNumber, int collectionSize = 30)
         {
-            if(collectionNumber <= 0)
+            if (collectionNumber <= 0)
             {
                 throw new ArgumentException("Collection number must be greater than zero.", nameof(collectionNumber));
             }
-            if(collectionSize <= 0)
+            if (collectionSize <= 0)
             {
                 throw new ArgumentException("Collection size must be greater than zero.", nameof(collectionSize));
             }
@@ -117,6 +117,11 @@ namespace BusinessLogicLayer.Services
             }
             var items = await _collectionProvider.GetItemsCollectionAsync(collectionNumber, collectionSize);
             return items.Select(item => new ReadItemDTO(item)).ToList();
+        }
+
+        public async Task<int> GetTotalCountAsync()
+        {
+            return await _collectionProvider.GetTotalCountAsync();
         }
     }
 }

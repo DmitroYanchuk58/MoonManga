@@ -37,6 +37,13 @@ namespace API.Controllers
             return Ok(readItems);
         }
 
+        [HttpGet("GetCountReadItems")]
+        public async Task<IActionResult> GetCountReadItems()
+        {
+            var count = await _service.GetTotalCountAsync();
+            return Ok(count);
+        }
+
         [HttpPost("CreateReadItem")]
         public async Task<IActionResult> CreateReadItem([FromBody] CreateReadItemDTO request)
         {
@@ -63,5 +70,7 @@ namespace API.Controllers
             await _service.DeleteReadItemAsync(id);
             return Ok();
         }
+
+
     }
 }
