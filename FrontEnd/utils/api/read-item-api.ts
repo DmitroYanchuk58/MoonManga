@@ -7,11 +7,6 @@ export const ReadItemApi = {
     return response.data;
   },
 
-  getById: async (id: string): Promise<ReadItem> => {
-    const response = await api.get<ReadItem>(`/readitem/${id}`);
-    return response.data;
-  },
-
   getCollection: async (
     collectionNumber: number,
     collectionSize: number,
@@ -23,6 +18,28 @@ export const ReadItemApi = {
           collectionNumber,
           collectionSize,
         },
+      },
+    );
+    return response.data;
+  },
+
+  getReadItemsCount: async () => {
+    const response = await api.get<number>("/ReadItem/GetCountReadItems");
+    return response.data;
+  },
+
+  getReadItem: async (id: string): Promise<ReadItem> => {
+    const response = await api.get<ReadItem>("/ReadItem/GetReadItem", {
+      params: { id },
+    });
+    return response.data;
+  },
+
+  findReadItemByTitle: async (title: string): Promise<ReadItem[]> => {
+    const response = await api.get<ReadItem[]>(
+      "/ReadItem/FindReadItemByTitle",
+      {
+        params: { title },
       },
     );
     return response.data;

@@ -14,11 +14,13 @@ namespace BusinessLogicLayer.Services
         private ICRUD<ReadItem> _readItemRepository;
         private IExist<ReadItem> _existRepository;
         private ICollectionProviderRepository<ReadItem> _collectionProvider;
+        private IFinder<ReadItem> _finder;
         public ReadItemService(CatalogDBContext context)
         {
             _readItemRepository = new CrudRepository<ReadItem>(context);
             _existRepository = new ExistRepository<ReadItem>(context);
             _collectionProvider = new CollectionProviderRepository<ReadItem>(context);
+            _finder = new ReadItemFinder(context);
         }
 
         public async Task CreateReadItemAsync(ReadItemDTO item)
@@ -122,6 +124,22 @@ namespace BusinessLogicLayer.Services
         public async Task<int> GetTotalCountAsync()
         {
             return await _collectionProvider.GetTotalCountAsync();
+        }
+
+        public async Task<List<ReadItemDTO>> FindReadItemsByTitle(string title)
+        {
+            if (string.IsNullOrWhiteSpace(title))
+            {
+                throw new ArgumentException("Title cannot be null or whitespace.", nameof(title));
+            }
+            var readItems = await _finder.SearhByTitle(title);
+
+            if (readItems == null || !readItems.Any())
+            {
+                throw new KeyNotFoundException($"ReadItem with title '{title}' was not found.");
+            }
+
+            return readItems.Select(r => new ReadItemDTO(r)).ToList();
         }
     }
 }

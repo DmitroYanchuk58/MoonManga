@@ -1,8 +1,9 @@
 import { useEffect, useState, useMemo } from "react";
-import { MultipleLinesList } from "../widgets/list/multiple-lines-list";
-import { Pagination } from "../widgets/collection/pagination";
-import { MangaCollectionManager } from "../features/MangaCatalogManager";
-import { ReadItem } from "../entities/model/read-item/read-item";
+import { MultipleLinesList } from "../../widgets/list/multiple-lines-list";
+import { SearchField } from "../../shared/components/search/search-field";
+import { Pagination } from "../../shared/components/pagination/pagination";
+import { MangaCollectionManager } from "../../features/MangaCatalogManager";
+import type { ReadItem } from "../../entities/model/read-item/read-item";
 import "./read-items-page.css";
 
 export const ReadItemsPage = () => {
@@ -21,8 +22,14 @@ export const ReadItemsPage = () => {
     setReadItems(data);
   };
 
+  const searchReadItemsByTitle = async (title: string) => {
+    const data = await collectionManager.find(title);
+    setReadItems(data);
+  };
+
   return (
     <div className="page">
+      <SearchField onSearch={searchReadItemsByTitle} />
       <MultipleLinesList items={readItems} />
       <Pagination
         onPageClick={(page) => {

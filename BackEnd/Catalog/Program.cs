@@ -23,6 +23,22 @@ builder.Services.AddScoped<IPageService, PageService>();
 
 builder.Logging.AddConsole();
 
+var allowedOrigins = new[]
+{
+    "http://localhost:5173",
+    "http://localhost:3000",
+    "http://localhost:3001",
+};
+
+builder.Services.AddCors(options => {
+    options.AddDefaultPolicy(policy => {
+        policy.WithOrigins(allowedOrigins) 
+              .AllowAnyHeader()
+              .AllowAnyMethod()
+              .AllowCredentials(); 
+    });
+});
+
 var app = builder.Build();
 
 app.UseMiddleware<ExceptionHandlingMiddleware>();
@@ -40,6 +56,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseCors();
 
 app.UseAuthorization();
 

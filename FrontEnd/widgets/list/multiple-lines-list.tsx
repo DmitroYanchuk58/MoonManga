@@ -1,5 +1,5 @@
 import { type ReadItem } from "../../entities/model/read-item/read-item";
-import { ReadItemCard } from "../../shared/components/read-item-card";
+import { ReadItemCard } from "../../shared/components/read-item-card/read-item-card";
 import "./multiple-lines-list.css";
 
 interface MultipleLinesListProps {

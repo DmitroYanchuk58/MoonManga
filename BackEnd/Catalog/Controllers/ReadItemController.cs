@@ -44,6 +44,13 @@ namespace API.Controllers
             return Ok(count);
         }
 
+        [HttpGet("FindReadItemByTitle")]
+        public async Task<IActionResult> FindReadItemByTitle(string title)
+        {
+            var readItems = await _service.FindReadItemsByTitle(title);
+            return Ok(readItems);
+        }
+
         [HttpPost("CreateReadItem")]
         public async Task<IActionResult> CreateReadItem([FromBody] CreateReadItemDTO request)
         {
@@ -52,6 +59,7 @@ namespace API.Controllers
                 Title = request.Title,
                 Type = request.Type,
                 CoverImage = request.CoverImage,
+                Description = request.Description,
             };
             await _service.CreateReadItemAsync(item);
             return Ok(item);
@@ -70,7 +78,5 @@ namespace API.Controllers
             await _service.DeleteReadItemAsync(id);
             return Ok();
         }
-
-
     }
 }

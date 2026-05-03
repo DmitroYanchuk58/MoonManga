@@ -31,6 +31,11 @@ namespace DatabaseAccessLayer.DatabaseContext
                     .IsRequired()
                     .HasMaxLength(100);
 
+                entity.HasIndex(b => b.Title);
+
+                entity.Property(b => b.Description)
+                    .HasMaxLength(100000);
+
                 entity.Property(b => b.Type)
                     .IsRequired();
 

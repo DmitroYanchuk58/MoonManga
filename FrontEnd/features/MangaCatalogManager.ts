@@ -1,4 +1,4 @@
-import { ReadItem } from "../entities/model/read-item/read-item";
+import type { ReadItem } from "../entities/model/read-item/read-item";
 import { ReadItemApi } from "../utils/api/read-item-api";
 
 export class MangaCollectionManager {
@@ -6,20 +6,22 @@ export class MangaCollectionManager {
   private pageNumber: number = 1;
   private maxPageNumber: number = 101;
   private minPageNumber: number = 1;
-
-  private fetchMangas = async (): Promise<ReadItem[]> => {
-    try {
-      const data = await ReadItemApi.getCollection(this.pageNumber, 30);
-      return data || [];
-    } catch (error) {
-      console.error("Помилка завантаження манги:", error);
-      return [];
-    }
-  };
+  private countReadItemsOnPage: number = 30;
 
   private async loadItems(): Promise<void> {
-    const data = await ReadItemApi.getCollection(this.pageNumber, 30);
+    const data = await ReadItemApi.getCollection(
+      this.pageNumber,
+      this.countReadItemsOnPage,
+    );
     this.items = data || [];
+  }
+
+  private async setMaxPageNumber() {
+    const count = await ReadItemApi.getReadItemsCount();
+    this.maxPageNumber = Math.ceil(count / this.countReadItemsOnPage);
+    if (this.maxPageNumber === 0) {
+      this.maxPageNumber = 1;
+    }
   }
 
   public async getItems(): Promise<ReadItem[]> {
@@ -30,18 +32,19 @@ export class MangaCollectionManager {
   public async moveRight(): Promise<void> {
     if (this.pageNumber < this.maxPageNumber) {
       this.pageNumber++;
-      await this.loadItems;
+      await this.loadItems();
     }
   }
 
   public async moveLeft(): Promise<void> {
     if (this.pageNumber > this.minPageNumber) {
       this.pageNumber--;
-      await this.loadItems;
+      await this.loadItems();
     }
   }
 
   public getPageMaxNumber() {
+    this.setMaxPageNumber();
     return this.maxPageNumber;
   }
 
@@ -51,5 +54,10 @@ export class MangaCollectionManager {
 
   public setCurrentPageNumber(numberPage: number) {
     this.pageNumber = numberPage;
+  }
+
+  public async find(title: string) {
+    const data = await ReadItemApi.findReadItemByTitle(title);
+    return data;
   }
 }

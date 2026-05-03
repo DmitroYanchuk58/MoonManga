@@ -8,6 +8,8 @@ namespace API.DTO
 
         public ReadItemType Type { get; set; } 
 
+        public string Description { get; set; }
+
         public byte[] CoverImage { get; set; }
     }
 }

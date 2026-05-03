@@ -15,5 +15,7 @@ namespace BusinessLogicLayer.Services.Interfaces
         public Task UpdateReadItemAsync(ReadItemDTO item);
 
         public Task DeleteReadItemAsync(Guid id);
+
+        public Task<List<ReadItemDTO>> FindReadItemsByTitle(string title);
     }
 }
