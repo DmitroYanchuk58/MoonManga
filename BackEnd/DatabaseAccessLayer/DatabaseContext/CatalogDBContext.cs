@@ -82,6 +82,12 @@ namespace DatabaseAccessLayer.DatabaseContext
                 entity.ToTable(t => t.HasCheckConstraint("CK_Tag_Name_NotEmpty", $"{lengthFunctionName}(TRIM(Name)) > 0"));
             });
 
+            modelBuilder.Entity<ReadItemTag>(entity =>
+            {
+                entity.HasKey(e => new { e.Id, e.IdReadItem, e.IdTag });
+                entity.ToTable("ReadItemTags");
+            });
+
             modelBuilder.Entity<ReadItemTag>()
                     .HasOne(e => e.ReadItem)
                     .WithMany(e => e.ReadItemTags)
