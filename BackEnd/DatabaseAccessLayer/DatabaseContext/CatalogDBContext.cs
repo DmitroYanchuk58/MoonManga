@@ -11,6 +11,10 @@ namespace DatabaseAccessLayer.DatabaseContext
 
         public DbSet<Page> Pages { get; set; }
 
+        public DbSet<Tag> Tags { get; set; }
+
+        public DbSet<ReadItemTag> ReadItemTags { get; set; }
+
         public CatalogDBContext(DbContextOptions<CatalogDBContext> options) : base(options)
         {
         }
@@ -67,6 +71,28 @@ namespace DatabaseAccessLayer.DatabaseContext
                 entity.ToTable(t => t.HasCheckConstraint("CK_Page_Order_Min", "[Order] > 0"));
                 entity.ToTable(t => t.HasCheckConstraint("CK_Page_Image_NotEmpty", "Image IS NOT NULL AND DATALENGTH(Image) > 0"));
             });
+
+            modelBuilder.Entity<Tag>(entity =>
+            {
+                entity.ToTable("Tags");
+                entity.HasKey(b => b.Id);
+                entity.Property(b => b.Name)
+                    .IsRequired()
+                    .HasMaxLength(100);
+                entity.ToTable(t => t.HasCheckConstraint("CK_Tag_Name_NotEmpty", $"{lengthFunctionName}(TRIM(Name)) > 0"));
+            });
+
+            modelBuilder.Entity<ReadItemTag>()
+                    .HasOne(e => e.ReadItem)
+                    .WithMany(e => e.ReadItemTags)
+                    .HasForeignKey(e => e.IdReadItem)
+                    .IsRequired();
+
+            modelBuilder.Entity<ReadItemTag>()
+                    .HasOne(e => e.Tag)
+                    .WithMany(e => e.ReadItemTags)
+                    .HasForeignKey(e => e.IdTag)
+                    .IsRequired();
         }
     }
 }
