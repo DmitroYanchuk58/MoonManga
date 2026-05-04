@@ -8,14 +8,6 @@ export class MangaCollectionManager {
   private minPageNumber: number = 1;
   private countReadItemsOnPage: number = 30;
 
-  private async loadItems(): Promise<void> {
-    const data = await ReadItemApi.getCollection(
-      this.pageNumber,
-      this.countReadItemsOnPage,
-    );
-    this.items = data || [];
-  }
-
   private async setMaxPageNumber() {
     const count = await ReadItemApi.getReadItemsCount();
     this.maxPageNumber = Math.ceil(count / this.countReadItemsOnPage);
@@ -43,11 +35,6 @@ export class MangaCollectionManager {
     }
   }
 
-  public getPageMaxNumber() {
-    this.setMaxPageNumber();
-    return this.maxPageNumber;
-  }
-
   public getCurrentPageNumber() {
     return this.pageNumber;
   }
@@ -59,5 +46,20 @@ export class MangaCollectionManager {
   public async find(title: string) {
     const data = await ReadItemApi.findReadItemByTitle(title);
     return data;
+  }
+
+  public async loadItems(): Promise<void> {
+    const data = await ReadItemApi.getCollection(
+      this.pageNumber,
+      this.countReadItemsOnPage,
+    );
+    this.items = data || [];
+
+    const count = await ReadItemApi.getReadItemsCount();
+    this.maxPageNumber = Math.ceil(count / this.countReadItemsOnPage) || 1;
+  }
+
+  public getPageMaxNumber() {
+    return this.maxPageNumber;
   }
 }

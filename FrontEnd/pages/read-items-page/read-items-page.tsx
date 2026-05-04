@@ -9,6 +9,8 @@ import "./read-items-page.css";
 export const ReadItemsPage = () => {
   const collectionManager = useMemo(() => new MangaCollectionManager(), []);
   const [readItems, setReadItems] = useState<ReadItem[]>([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [maxPage, setMaxPage] = useState(1);
 
   useEffect(() => {
     const loadData = async () => {
@@ -18,8 +20,16 @@ export const ReadItemsPage = () => {
   }, [collectionManager]);
 
   const updateReadItems = async () => {
-    const data = await collectionManager.getItems();
-    setReadItems(data);
+    await collectionManager.loadItems();
+    setReadItems(await collectionManager.getItems());
+    syncPagination();
+  };
+
+  const handleMove = async (direction: "left" | "right") => {
+    if (direction === "left") await collectionManager.moveLeft();
+    else await collectionManager.moveRight();
+
+    await updateReadItems();
   };
 
   const searchReadItemsByTitle = async (title: string) => {
@@ -27,25 +37,27 @@ export const ReadItemsPage = () => {
     setReadItems(data);
   };
 
+  const syncPagination = () => {
+    setCurrentPage(collectionManager.getCurrentPageNumber());
+    setMaxPage(collectionManager.getPageMaxNumber());
+  };
+
+  const handlePageChange = async (page: number) => {
+    collectionManager.setCurrentPageNumber(page);
+    await updateReadItems();
+    syncPagination();
+  };
+
   return (
     <div className="page">
       <SearchField onSearch={searchReadItemsByTitle} />
       <MultipleLinesList items={readItems} />
       <Pagination
-        onPageClick={(page) => {
-          collectionManager.setCurrentPageNumber(page);
-          updateReadItems();
-        }}
-        currentPage={collectionManager.getCurrentPageNumber()}
-        maxPageNumber={collectionManager.getPageMaxNumber()}
-        onRightArrowClick={async () => {
-          await collectionManager.moveRight();
-          await updateReadItems();
-        }}
-        onLeftArrowClick={async () => {
-          await collectionManager.moveLeft();
-          await updateReadItems();
-        }}
+        onRightArrowClick={() => handleMove("right")}
+        onLeftArrowClick={() => handleMove("left")}
+        currentPage={currentPage}
+        maxPageNumber={maxPage}
+        onPageClick={handlePageChange}
       />
     </div>
   );
