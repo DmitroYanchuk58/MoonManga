@@ -141,5 +141,34 @@ namespace BusinessLogicLayer.Services
 
             return readItems.Select(r => new ReadItemDTO(r)).ToList();
         }
+
+        public async Task<List<ReadItemDTO>> GetTopRatedReadItems(int collectionNumber, int collectionSize = 30)
+        {
+            if (collectionNumber <= 0)
+            {
+                throw new ArgumentException("Collection number must be greater than zero.", nameof(collectionNumber));
+            }
+            if (collectionSize <= 0)
+            {
+                throw new ArgumentException("Collection size must be greater than zero.", nameof(collectionSize));
+            }
+            var items = await _collectionProvider.GetTopRatedReadItems(collectionNumber, collectionSize);
+            return items.Select(item => new ReadItemDTO(item)).ToList();
+        }
+
+        public async Task<List<ReadItemDTO>> GetLessRatedReadItems(int collectionNumber, int collectionSize = 30)
+        {
+            if (collectionNumber <= 0)
+            {
+                throw new ArgumentException("Collection number must be greater than zero.", nameof(collectionNumber));
+            }
+            if (collectionSize <= 0)
+            {
+                throw new ArgumentException("Collection size must be greater than zero.", nameof(collectionSize));
+            }
+            var items = await _collectionProvider.GetLessRatedReadItems(collectionNumber, collectionSize);
+            return items.Select(item => new ReadItemDTO(item)).ToList();
+        }
+
     }
 }

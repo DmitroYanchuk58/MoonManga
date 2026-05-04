@@ -8,14 +8,6 @@ export class MangaCollectionManager {
   private minPageNumber: number = 1;
   private countReadItemsOnPage: number = 30;
 
-  private async setMaxPageNumber() {
-    const count = await ReadItemApi.getReadItemsCount();
-    this.maxPageNumber = Math.ceil(count / this.countReadItemsOnPage);
-    if (this.maxPageNumber === 0) {
-      this.maxPageNumber = 1;
-    }
-  }
-
   public async getItems(): Promise<ReadItem[]> {
     await this.loadItems();
     return this.items;

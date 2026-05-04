@@ -31,8 +31,6 @@ namespace DatabaseAccessLayer.DatabaseContext
                     .IsRequired()
                     .HasMaxLength(100);
 
-                entity.HasIndex(b => b.Title);
-
                 entity.Property(b => b.Description)
                     .HasMaxLength(100000);
 
@@ -46,6 +44,9 @@ namespace DatabaseAccessLayer.DatabaseContext
                 entity.ToTable(t => t.HasCheckConstraint("CK_ReadItem_Title_NotEmpty", $"{lengthFunctionName}(TRIM(Title)) > 0"));
                 entity.ToTable(t => t.HasCheckConstraint("CK_ReadItem_Type_NotEmpty", $"{lengthFunctionName}(TRIM(Type)) > 0"));
                 entity.ToTable(t => t.HasCheckConstraint("CK_ReadItem_CoverImage_NotEmpty", "CoverImage IS NOT NULL AND DATALENGTH(CoverImage) > 0"));
+
+                entity.HasIndex(b => b.Title);
+                entity.HasIndex(b => b.Rating);
             });
 
             modelBuilder.Entity<Chapter>(entity =>

@@ -51,6 +51,20 @@ namespace API.Controllers
             return Ok(readItems);
         }
 
+        [HttpGet("GetTopRatedReadItems")]
+        public async Task<IActionResult> GetTopRatedReadItems(int collectionNumber, int collectionSize)
+        {
+            var readItems = await _service.GetTopRatedReadItems(collectionNumber, collectionSize);
+            return Ok(readItems);
+        }
+
+        [HttpGet("GetLessRatedReadItems")]
+        public async Task<IActionResult> GetLessRatedReadItems(int collectionNumber, int collectionSize)
+        {
+            var readItems = await _service.GetLessRatedReadItems(collectionNumber, collectionSize);
+            return Ok(readItems);
+        }
+
         [HttpPost("CreateReadItem")]
         public async Task<IActionResult> CreateReadItem([FromBody] CreateReadItemDTO request)
         {
@@ -60,6 +74,7 @@ namespace API.Controllers
                 Type = request.Type,
                 CoverImage = request.CoverImage,
                 Description = request.Description,
+                Rating = request.Rating,
             };
             await _service.CreateReadItemAsync(item);
             return Ok(item);

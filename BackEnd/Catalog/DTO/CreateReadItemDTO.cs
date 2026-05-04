@@ -11,5 +11,7 @@ namespace API.DTO
         public string Description { get; set; }
 
         public byte[] CoverImage { get; set; }
+
+        public float Rating { get; set; }
     }
 }

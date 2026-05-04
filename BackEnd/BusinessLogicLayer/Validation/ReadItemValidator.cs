@@ -24,6 +24,8 @@ namespace BusinessLogicLayer.Validation
                         .WithMessage("Image data must not be null.")
                         .Must(image => image.Length > 0)
                         .WithMessage("Image data must not be empty.");
+
+            RuleFor(x => x.Rating).InclusiveBetween(0, 10).WithMessage("Rating must be between 0 and 10.");
         }
     }
 }

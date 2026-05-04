@@ -13,15 +13,18 @@ namespace BusinessLogicLayer.DTOs
         public string Description { get; set; }
         public byte[] CoverImage { get; set; }
 
+        public float Rating { get; set; }
+
         public ReadItemDTO() { }
 
-        public ReadItemDTO(Guid id, string title, ReadItemType type, string description, byte[] coverImage) : this()
+        public ReadItemDTO(Guid id, string title, ReadItemType type, string description, byte[] coverImage, float rating) : this()
         {
             Id = id;
             Title = title;
             Type = type;
             Description = description;
             CoverImage = coverImage;
+            Rating = rating;
         }
 
         public ReadItemDTO(ReadItem readItem)
@@ -29,7 +32,8 @@ namespace BusinessLogicLayer.DTOs
                    readItem.Title,
                    Enum.Parse<ReadItemType>(readItem.Type, ignoreCase: true),
                    readItem.Description,
-                   readItem.CoverImage)
+                   readItem.CoverImage,
+                   readItem.Rating)
         {
         }
 
@@ -39,7 +43,8 @@ namespace BusinessLogicLayer.DTOs
             Title = this.Title,
             Type = this.Type.ToString(),
             Description = this.Description,
-            CoverImage = this.CoverImage
+            CoverImage = this.CoverImage,
+            Rating = this.Rating         
         };
     }
 }

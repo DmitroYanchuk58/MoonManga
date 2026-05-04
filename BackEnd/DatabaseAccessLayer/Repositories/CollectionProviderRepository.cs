@@ -26,5 +26,29 @@ namespace DatabaseAccessLayer.Repositories
         {
             return await _context.Set<T>().CountAsync();
         }
+
+        public async Task<List<ReadItem>> GetTopRatedReadItems(int collectionNumber, int collectionSize = 30)
+        {
+            var items = await _context.ReadItems
+                .AsNoTracking()
+                .OrderByDescending(r => r.Rating)
+                .Skip((collectionNumber - 1) * collectionSize)
+                .Take(collectionSize)
+                .ToListAsync();
+
+            return items;
+        }
+
+        public async Task<List<ReadItem>> GetLessRatedReadItems(int collectionNumber, int collectionSize = 30)
+        {
+            var items = await _context.ReadItems
+                     .AsNoTracking()
+                     .OrderBy(r => r.Rating)
+                     .Skip((collectionNumber - 1) * collectionSize)
+                     .Take(collectionSize)
+                     .ToListAsync();
+
+            return items;
+        }
     }
 }
