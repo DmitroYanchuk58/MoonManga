@@ -1,10 +1,11 @@
 ﻿using BusinessLogicLayer.DTOs;
+using DatabaseAccessLayer.Entities;
 
-namespace BusinessLogicLayer.Services.Interfaces
+namespace BusinessLogicLayer.Features.CollectionProvider
 {
-    public interface ICollectionProvider<T> where T : DTO
+    public interface ICollectionProvider
     {
-        public Task<List<T>> GetItemsCollectionAsync(int collectionNumber, int collectionSize);
+        public Task<List<ReadItemDTO>> GetItemsCollectionAsync(int collectionNumber, int collectionSize);
 
         public Task<int> GetTotalCountAsync();
 

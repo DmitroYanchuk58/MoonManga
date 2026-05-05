@@ -1,13 +1,12 @@
-﻿using BusinessLogicLayer.DTOs.Interfaces;
-using DatabaseAccessLayer.Entities;
+﻿using DatabaseAccessLayer.Entities;
 
 namespace BusinessLogicLayer.DTOs
 {
-    public class ChapterDTO : DTO, IConvertorIntoEntity<Chapter>
+    public class ChapterDTO : DTO<Chapter>
     {
         public int Order { get; set; }
 
-        public ChapterDTO() { }
+        public ChapterDTO() : base() { }
 
         public ChapterDTO(Guid id, int order) : this()
         {
@@ -16,15 +15,10 @@ namespace BusinessLogicLayer.DTOs
         }
 
         public ChapterDTO(Chapter chapter)
-            : this(chapter.Id,
-                   chapter.Order)
+            : base(chapter)
         {
+            this.Id = chapter.Id;
+            this.Order = chapter.Order;
         }
-
-        public Chapter ConvertToEntity() => new Chapter
-        {
-            Id = this.Id,
-            Order = this.Order
-        };
     }
 }

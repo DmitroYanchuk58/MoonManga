@@ -1,5 +1,4 @@
-﻿using BusinessLogicLayer.DTOs.Interfaces;
-using DatabaseAccessLayer.Entities;
+﻿using DatabaseAccessLayer.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,13 +7,13 @@ using System.Threading.Tasks;
 
 namespace BusinessLogicLayer.DTOs
 {
-    public class PageDTO : DTO, IConvertorIntoEntity<Page>
+    public class PageDTO : DTO<Page>
     {
         public int Order { get; set; }  
 
         public byte[] Image { get; set; }
 
-        public PageDTO() { }
+        public PageDTO() : base() { }
 
         public PageDTO(Guid id, int order, byte[] image) : this()
         {
@@ -23,14 +22,10 @@ namespace BusinessLogicLayer.DTOs
             Image = image;
         }
 
-        public PageDTO(Page page) : this(page.Id, page.Order, page.Image)
-        {}
-
-        public Page ConvertToEntity() => new Page
+        public PageDTO(Page page) : base(page) 
         {
-            Id = this.Id,
-            Order = this.Order,
-            Image = this.Image
-        };
+            this.Id = page.Id;
+            this.Image = page.Image;
+        }
     }
 }

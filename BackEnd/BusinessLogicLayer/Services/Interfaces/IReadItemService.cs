@@ -1,10 +1,8 @@
 ﻿using BusinessLogicLayer.DTOs;
-using DatabaseAccessLayer.Entities;
-using DatabaseAccessLayer.Repositories.Interfaces;
 
-namespace BusinessLogicLayer.Services.Interfaces
+namespace BusinessLogicLayer.Services.Interfaces 
 {
-    public interface IReadItemService : ICollectionProvider<ReadItemDTO>
+    public interface IReadItemService 
     {
         public Task CreateReadItemAsync(ReadItemDTO item);
 

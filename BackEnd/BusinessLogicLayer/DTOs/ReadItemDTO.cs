@@ -1,10 +1,9 @@
 ﻿using BusinessLogicLayer.DTOs.Enums;
-using BusinessLogicLayer.DTOs.Interfaces;
 using DatabaseAccessLayer.Entities;
 
 namespace BusinessLogicLayer.DTOs
 {
-    public class ReadItemDTO : DTO, IConvertorIntoEntity<ReadItem>
+    public class ReadItemDTO : DTO<ReadItem>
     {
         public string Title { get; set; }
 
@@ -15,7 +14,7 @@ namespace BusinessLogicLayer.DTOs
 
         public float Rating { get; set; }
 
-        public ReadItemDTO() { }
+        public ReadItemDTO() : base() { }
 
         public ReadItemDTO(Guid id, string title, ReadItemType type, string description, byte[] coverImage, float rating) : this()
         {
@@ -28,23 +27,14 @@ namespace BusinessLogicLayer.DTOs
         }
 
         public ReadItemDTO(ReadItem readItem)
-            : this(readItem.Id,
-                   readItem.Title,
-                   Enum.Parse<ReadItemType>(readItem.Type, ignoreCase: true),
-                   readItem.Description,
-                   readItem.CoverImage,
-                   readItem.Rating)
+            : base(readItem)
         {
+            this.Id = readItem.Id;
+            this.Title = readItem.Title;
+            this.Type = Enum.Parse<ReadItemType>(readItem.Type, ignoreCase: true);
+            this.Description = readItem.Description;
+            this.CoverImage = readItem.CoverImage;
+            this.Rating = readItem.Rating;
         }
-
-        public ReadItem ConvertToEntity() => new ReadItem
-        {
-            Id = this.Id,
-            Title = this.Title,
-            Type = this.Type.ToString(),
-            Description = this.Description,
-            CoverImage = this.CoverImage,
-            Rating = this.Rating         
-        };
     }
 }
