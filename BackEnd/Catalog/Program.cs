@@ -20,6 +20,7 @@ builder.Services.AddDbContext<CatalogDBContext>(options =>
 builder.Services.AddScoped<IReadItemService, ReadItemService>();
 builder.Services.AddScoped<IChapterService, ChapterService>();
 builder.Services.AddScoped<IPageService, PageService>();
+builder.Services.AddScoped<ITagService, TagService>();
 
 builder.Logging.AddConsole();
 

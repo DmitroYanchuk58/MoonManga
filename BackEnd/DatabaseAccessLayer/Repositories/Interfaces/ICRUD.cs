@@ -1,4 +1,5 @@
 ﻿using DatabaseAccessLayer.Entities;
+using System.Linq.Expressions;
 
 namespace DatabaseAccessLayer.Repositories.Interfaces
 {
@@ -8,6 +9,8 @@ namespace DatabaseAccessLayer.Repositories.Interfaces
 
         // READ (Один за ID)
         public Task<T> GetByIdAsync(Guid id);
+
+        public Task<List<T>> GetByConditionAsync(Expression<Func<T, bool>> predicate);
 
         // READ (Всі записи)
         public Task<List<T>> GetAllAsync();

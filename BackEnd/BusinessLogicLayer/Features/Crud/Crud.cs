@@ -6,12 +6,13 @@ using DatabaseAccessLayer.Entities;
 using DatabaseAccessLayer.Repositories;
 using DatabaseAccessLayer.Repositories.Interfaces;
 using FluentValidation;
+using System.Linq.Expressions;
 
 namespace BusinessLogicLayer.Features.Crud
 {
     public class Crud<TEntity, TDto> : ICrud<TEntity, TDto>
-        where TEntity : Entity 
-        where TDto : DTO <TEntity>
+        where TEntity : Entity
+        where TDto : DTO<TEntity>
     {
         private ICRUD<TEntity> _crudRepository;
         private IExist<TEntity> _existRepository;
@@ -90,6 +91,16 @@ namespace BusinessLogicLayer.Features.Crud
             }
 
             await _crudRepository.UpdateAsync(_convertor.ConvertToEntity(item));
+        }
+
+        public async Task<List<TDto>> GetByConditionAsync(Expression<Func<TEntity, bool>> predicate)
+        {
+            var entities = await _crudRepository.GetByConditionAsync(predicate);
+            if(entities == null || !entities.Any())
+            {
+                throw new KeyNotFoundException("No entities found matching the specified condition.");
+            }
+            return entities.Select(_convertor.ConvertToDto).ToList();
         }
     }
 }

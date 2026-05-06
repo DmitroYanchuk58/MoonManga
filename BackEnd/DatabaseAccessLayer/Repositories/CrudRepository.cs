@@ -2,6 +2,7 @@
 using DatabaseAccessLayer.Entities;
 using DatabaseAccessLayer.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
 
 namespace DatabaseAccessLayer.Repositories
 {
@@ -51,6 +52,14 @@ namespace DatabaseAccessLayer.Repositories
                 _dbSet.Remove(entity);
                 await _context.SaveChangesAsync();
             }
+        }
+
+        // Custom get method
+        public async Task<List<T>> GetByConditionAsync(Expression<Func<T, bool>> predicate)
+        {
+            return await _dbSet.AsNoTracking()
+                       .Where(predicate)
+                       .ToListAsync();
         }
     }
 }
