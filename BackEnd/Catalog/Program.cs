@@ -21,6 +21,7 @@ builder.Services.AddScoped<IReadItemService, ReadItemService>();
 builder.Services.AddScoped<IChapterService, ChapterService>();
 builder.Services.AddScoped<IPageService, PageService>();
 builder.Services.AddScoped<ITagService, TagService>();
+builder.Services.AddScoped<IReadItemTagService, ReadItemTagService>();
 
 builder.Logging.AddConsole();
 
