@@ -6,7 +6,7 @@ namespace BusinessLogicLayer.Services.Interfaces
     {
         public Task CreateReadItemAsync(ReadItemDTO item);
 
-        public Task<ReadItemDTO> GetReadItemByIdAsync(Guid id);
+        public Task<ReadItemDTO> GetReadItemByIdAsync(Guid id, bool includeTags = false);
 
         public Task<List<ReadItemDTO>> GetAllReadItemsAsync();
 

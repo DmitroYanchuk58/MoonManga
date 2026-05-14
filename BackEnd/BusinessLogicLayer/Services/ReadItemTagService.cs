@@ -7,6 +7,7 @@ using BusinessLogicLayer.Services.Interfaces;
 using BusinessLogicLayer.Validation;
 using DatabaseAccessLayer.DatabaseContext;
 using DatabaseAccessLayer.Entities;
+using DatabaseAccessLayer.Repositories.Interfaces;
 
 namespace BusinessLogicLayer.Services
 {

@@ -13,8 +13,9 @@ namespace DatabaseAccessLayer.Repositories.Interfaces
         where TLink : Entity
         where TTarget : Entity
     {
-        public Task<List<TMain>> GetCombinedDataAsync(
-                    Expression<Func<TMain, IEnumerable<TLink>>> linkProperty,
-                    Expression<Func<TLink, TTarget>> targetProperty);
+        public Task<(TMain?, List<TTarget>?)> GetCombinedDataByIdAsync(
+            Guid idEntity,
+            Expression<Func<TMain, IEnumerable<TLink>>> linkProperty,
+            Expression<Func<TLink, TTarget>> targetProperty);
     }
 }

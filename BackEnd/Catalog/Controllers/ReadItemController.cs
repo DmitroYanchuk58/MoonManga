@@ -30,6 +30,13 @@ namespace API.Controllers
             return Ok(readItem);
         }
 
+        [HttpGet("GetReadItemWithTags")]
+        public async Task<IActionResult> GetReadItemWithTags(Guid id)
+        {
+            var readItem = await _service.GetReadItemByIdAsync(id, includeTags: true);
+            return Ok(readItem);
+        }
+
         [HttpGet("GetReadItemsCollection")]
         public async Task<IActionResult> GetReadItemsCollection(int collectionNumber, int collectionSize)
         {

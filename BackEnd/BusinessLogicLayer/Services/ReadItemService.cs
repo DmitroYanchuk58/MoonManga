@@ -3,6 +3,7 @@ using BusinessLogicLayer.Features;
 using BusinessLogicLayer.Features.CollectionProvider;
 using BusinessLogicLayer.Features.Crud;
 using BusinessLogicLayer.Features.ICrud;
+using BusinessLogicLayer.Features.Join;
 using BusinessLogicLayer.Helpers.Convertors;
 using BusinessLogicLayer.Services.Interfaces;
 using BusinessLogicLayer.Validation;
@@ -19,10 +20,13 @@ namespace BusinessLogicLayer.Services
         private ICrud<ReadItem, ReadItemDTO> _crud;
         private ICollectionProvider _collectionProvider;
         private IFinder<ReadItem> _finder;
+        private IJoinProvider _joinProvider;
+
         public ReadItemService(CatalogDBContext context)
         {
             _crud = new Crud<ReadItem, ReadItemDTO>(context, new ConvertorReadItemDTOIntoReadItem(), new ReadItemValidator());
             _collectionProvider = new CollectionProvider(new CollectionProviderRepository<ReadItem>(context));
+            _joinProvider = new ReadItemJoinProvider(context);
             _finder = new ReadItemFinder(context);
         }
 
@@ -31,8 +35,13 @@ namespace BusinessLogicLayer.Services
             await _crud.CreateAsync(item);
         }
 
-        public async Task<ReadItemDTO> GetReadItemByIdAsync(Guid id)
+        public async Task<ReadItemDTO> GetReadItemByIdAsync(Guid id, bool includeTags = false)
         {
+            if (includeTags)
+            {
+                var result = await GetReadItemWithTagsAsync(id);
+                return result;
+            }
             return await _crud.GetByIdAsync(id);
         }
 
@@ -85,6 +94,11 @@ namespace BusinessLogicLayer.Services
             }
 
             return readItems.Select(r => new ReadItemDTO(r)).ToList();
+        }
+
+        private async Task<ReadItemDTO> GetReadItemWithTagsAsync(Guid idReadItem)
+        {
+            return await _joinProvider.GetReadItemWithTagAsync(idReadItem);
         }
     }
 }
