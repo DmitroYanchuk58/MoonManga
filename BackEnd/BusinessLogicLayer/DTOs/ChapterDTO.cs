@@ -6,6 +6,8 @@ namespace BusinessLogicLayer.DTOs
     {
         public int Order { get; set; }
 
+
+
         public ChapterDTO() : base() { }
 
         public ChapterDTO(Guid id, int order) : this()
