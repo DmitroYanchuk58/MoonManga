@@ -29,11 +29,9 @@ export const MangaDetailsPage = ({ readItem }: MangaDetailsPageProps) => {
           <h1>{readItem.title}</h1>
         </div>
         <div className="tags">
-          <Badge label="Fantasy"></Badge>
-          <Badge label="Fantasy"></Badge>
-          <Badge label="Fantasy"></Badge>
-          <Badge label="Fantasy"></Badge>
-          <Badge label="Fantasy"></Badge>
+          {readItem.tags.map((tag) => (
+            <Badge label={tag.name}></Badge>
+          ))}
         </div>
         <div className="description">
           <p>{readItem.description}</p>

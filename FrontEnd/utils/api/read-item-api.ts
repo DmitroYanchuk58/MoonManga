@@ -35,6 +35,13 @@ export const ReadItemApi = {
     return response.data;
   },
 
+  getFullInfoReadItem: async (id: string): Promise<ReadItem> => {
+    const response = await api.get<ReadItem>("/ReadItem/GetReadItemWithTags", {
+      params: { id },
+    });
+    return response.data;
+  },
+
   findReadItemByTitle: async (title: string): Promise<ReadItem[]> => {
     const response = await api.get<ReadItem[]>(
       "/ReadItem/FindReadItemByTitle",

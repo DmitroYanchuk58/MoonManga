@@ -1,4 +1,5 @@
 import { ReadItemType } from "./read-item-type";
+import { Tag } from "../tag/tag";
 
 export interface ReadItem {
   id: string;
@@ -6,4 +7,5 @@ export interface ReadItem {
   description: string;
   type: ReadItemType;
   coverImage: string;
+  tags: Array<Tag>;
 }

@@ -16,7 +16,7 @@ export const ReadItemPage = () => {
     const loadData = async () => {
       try {
         setLoading(true);
-        const data = await ReadItemApi.getReadItem(id);
+        const data = await ReadItemApi.getFullInfoReadItem(id);
         setReadItem(data);
       } catch (error) {
         console.error("Failed to fetch read item:", error);
