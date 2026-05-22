@@ -13,6 +13,11 @@ namespace BusinessLogicLayer.Validation
                 .NotNull()
                 .GreaterThan(0)
                 .WithMessage("Order must be a positive number starting from 1.");
+            RuleFor(x => x.Volume)
+                .Cascade(CascadeMode.Stop)
+                .NotNull()
+                .GreaterThan(0)
+                .WithMessage("Volume must be a positive number starting from 1.");
         }
     }
 }

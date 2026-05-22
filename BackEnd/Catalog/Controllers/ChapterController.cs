@@ -35,7 +35,9 @@ namespace API.Controllers
         {
             var chapter = new ChapterDTO
             {
-                Order = request.Order
+                Order = request.Order,
+                Volume = request.Volume,
+                Title = request.Title
             };
             await _service.CreateChapterAsync(chapter);
             return Ok(chapter);

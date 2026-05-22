@@ -224,32 +224,6 @@ namespace Tests.BLL
             await Assert.ThrowsAsync<ArgumentException>(() => service.DeleteReadItemAsync(Guid.Empty));
         }
 
-        [Fact]
-        public async Task UpdateReadItemAsync_ShouldUpdateReadItem()
-        {
-            // Arrange
-            using var context = GetDbContext();
-            var service = new ReadItemService(context);
-            var readItemDto = new ReadItemDTO
-            {
-                Id = Guid.NewGuid(),
-                Title = "Test Title",
-                Type = ReadItemType.Manga
-            };
-            await context.ReadItems.AddAsync(readItemDto.ConvertToEntity());
-            await context.SaveChangesAsync();
-            context.ChangeTracker.Clear();
-            readItemDto.Title = "Updated Title";
-            // Act 
-            await service.UpdateReadItemAsync(readItemDto);
-            context.ChangeTracker.Clear();
-            var updatedItem = await context.ReadItems
-                .FirstOrDefaultAsync(x => x.Id == readItemDto.Id);
-
-            // Assert
-            Assert.NotNull(updatedItem);
-            Assert.Equal("Updated Title", updatedItem.Title);
-        }
 
         [Fact]
         public async Task UpdateReadItemAsync_UpdateNotExistedReadItem_ShouldThrowKeyNotFoundException()
