@@ -60,7 +60,6 @@ namespace DatabaseAccessLayer.DatabaseContext
                 entity.HasKey(b => b.Id);
 
                 entity.Property(b => b.Title)
-                    .IsRequired()
                     .HasMaxLength(200);
 
                 entity.ToTable(t => t.HasCheckConstraint("CK_Chapter_Order_Min", "[Order] > 0"));
@@ -103,6 +102,12 @@ namespace DatabaseAccessLayer.DatabaseContext
                     .HasOne(e => e.Tag)
                     .WithMany(e => e.ReadItemTags)
                     .HasForeignKey(e => e.IdTag)
+                    .IsRequired();
+
+            modelBuilder.Entity<Chapter>()
+                    .HasOne(e => e.ReadItem)
+                    .WithMany(e => e.Chapters)
+                    .HasForeignKey(e => e.IdReadItem)
                     .IsRequired();
         }
     }

@@ -16,7 +16,10 @@ namespace BusinessLogicLayer.Helpers.Convertors
             return new Chapter
             {
                 Id = dto.Id,
-                Order = dto.Order
+                Order = dto.Order,
+                Volume = dto.Volume,
+                Title = dto.Title,
+                IdReadItem = dto.IdReadItem
             };
         }
     }

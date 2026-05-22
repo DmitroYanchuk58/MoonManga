@@ -13,5 +13,7 @@
         public float Rating { get; set; }
 
         public ICollection<ReadItemTag> ReadItemTags { get; set; }
+
+        public ICollection<Chapter> Chapters { get; set; }
     }
 }

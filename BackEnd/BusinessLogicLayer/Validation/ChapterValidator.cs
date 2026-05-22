@@ -18,6 +18,8 @@ namespace BusinessLogicLayer.Validation
                 .NotNull()
                 .GreaterThan(0)
                 .WithMessage("Volume must be a positive number starting from 1.");
+
+            RuleFor(x => x.Title).Length(0, 200).WithMessage("Title must be at most 200 characters long.");
         }
     }
 }

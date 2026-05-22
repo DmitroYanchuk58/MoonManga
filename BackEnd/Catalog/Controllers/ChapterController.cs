@@ -37,7 +37,8 @@ namespace API.Controllers
             {
                 Order = request.Order,
                 Volume = request.Volume,
-                Title = request.Title
+                Title = request.Title,
+                IdReadItem = request.IdReadItem 
             };
             await _service.CreateChapterAsync(chapter);
             return Ok(chapter);

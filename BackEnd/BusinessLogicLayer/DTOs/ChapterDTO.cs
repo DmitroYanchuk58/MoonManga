@@ -10,14 +10,17 @@ namespace BusinessLogicLayer.DTOs
 
         public string Title { get; set; }   
 
+        public Guid? IdReadItem { get; set; }
+
         public ChapterDTO() : base() { }
 
-        public ChapterDTO(Guid id, int order, int volume, string title) : this()
+        public ChapterDTO(Guid id, int order, int volume, string title, Guid? idReadItem) : this()
         {
             this.Id = id;
             this.Order = order;
             this.Volume = volume;
             this.Title = title;
+            this.IdReadItem = idReadItem;
         }
 
         public ChapterDTO(Chapter chapter)
@@ -27,6 +30,7 @@ namespace BusinessLogicLayer.DTOs
             this.Order = chapter.Order;
             this.Title = chapter.Title;
             this.Volume = chapter.Volume;
+            this.IdReadItem = chapter.IdReadItem;
         }
     }
 }

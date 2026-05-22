@@ -4,6 +4,7 @@ using DatabaseAccessLayer.DatabaseContext;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DatabaseAccessLayer.Migrations
 {
     [DbContext(typeof(CatalogDBContext))]
-    partial class CatalogDBContextModelSnapshot : ModelSnapshot
+    [Migration("20260522090607_DeleteChapterTitleRule")]
+    partial class DeleteChapterTitleRule
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -28,9 +31,6 @@ namespace DatabaseAccessLayer.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("IdReadItem")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<int>("Order")
                         .HasColumnType("int");
 
@@ -43,8 +43,6 @@ namespace DatabaseAccessLayer.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("IdReadItem");
 
                     b.ToTable("Chapters", null, t =>
                         {
@@ -161,17 +159,6 @@ namespace DatabaseAccessLayer.Migrations
                         });
                 });
 
-            modelBuilder.Entity("DatabaseAccessLayer.Entities.Chapter", b =>
-                {
-                    b.HasOne("DatabaseAccessLayer.Entities.ReadItem", "ReadItem")
-                        .WithMany("Chapters")
-                        .HasForeignKey("IdReadItem")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("ReadItem");
-                });
-
             modelBuilder.Entity("DatabaseAccessLayer.Entities.ReadItemTag", b =>
                 {
                     b.HasOne("DatabaseAccessLayer.Entities.ReadItem", "ReadItem")
@@ -193,8 +180,6 @@ namespace DatabaseAccessLayer.Migrations
 
             modelBuilder.Entity("DatabaseAccessLayer.Entities.ReadItem", b =>
                 {
-                    b.Navigation("Chapters");
-
                     b.Navigation("ReadItemTags");
                 });
 
