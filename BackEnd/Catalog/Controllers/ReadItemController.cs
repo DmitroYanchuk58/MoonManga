@@ -37,6 +37,13 @@ namespace API.Controllers
             return Ok(readItem);
         }
 
+        [HttpGet("GetReadItemFullInfo")]
+        public async Task<IActionResult> GetReadItemsFullInfo(Guid id)
+        {
+            var readItems = await _service.GetReadItemByIdAsync(id, includeTags: true, includeChapters: true);
+            return Ok(readItems);
+        }
+
         [HttpGet("GetReadItemsCollection")]
         public async Task<IActionResult> GetReadItemsCollection(int collectionNumber, int collectionSize)
         {

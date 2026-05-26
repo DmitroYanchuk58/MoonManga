@@ -15,7 +15,7 @@ public class JoinRepository<TMain, TLink, TTarget> : IJoin<TMain, TLink, TTarget
         _context = context;
     }
 
-    public async Task<(TMain?, List<TTarget>?)> GetCombinedDataByIdAsync(
+    public async Task<(TMain?, List<TTarget>?)> GetManyToManyByIdAsync(
         Guid idEntity,
         Expression<Func<TMain, IEnumerable<TLink>>> linkProperty,
         Expression<Func<TLink, TTarget>> targetProperty)
@@ -34,5 +34,24 @@ public class JoinRepository<TMain, TLink, TTarget> : IJoin<TMain, TLink, TTarget
         var targets = links.Select(link => getTarget(link)).ToList();
 
         return (entity, targets);
+    }
+
+    public async Task<(TMain?, List<TChild>?)> GetOneToManyByIdAsync<TChild>(
+        Guid idEntity,
+        Expression<Func<TMain, IEnumerable<TChild>>> childProperty)
+        where TChild : Entity
+    {
+        var entity = await _context.Set<TMain>()
+            .AsNoTracking()
+            .Where(x => x.Id == idEntity)
+            .Include(childProperty) 
+            .FirstOrDefaultAsync();
+
+        if (entity == null) return (null, null);
+
+        var getChildren = childProperty.Compile();
+        var children = getChildren(entity)?.ToList() ?? new List<TChild>();
+
+        return (entity, children);
     }
 }

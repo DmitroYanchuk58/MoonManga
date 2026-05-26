@@ -16,9 +16,11 @@ namespace BusinessLogicLayer.DTOs
 
         public List<TagDTO> Tags { get; set; } = new List<TagDTO>();
 
+        public List<ChapterDTO> Chapters { get; set; } = new List<ChapterDTO>();
+
         public ReadItemDTO() : base() { }
 
-        public ReadItemDTO(Guid id, string title, ReadItemType type, string description, byte[] coverImage, float rating, List<TagDTO> tags) : this()
+        public ReadItemDTO(Guid id, string title, ReadItemType type, string description, byte[] coverImage, float rating, List<TagDTO> tags, List<ChapterDTO> chapters) : this()
         {
             Id = id;
             Title = title;
@@ -27,6 +29,7 @@ namespace BusinessLogicLayer.DTOs
             CoverImage = coverImage;
             Rating = rating;
             Tags = tags;
+            Chapters = chapters;
         }
 
         public ReadItemDTO(ReadItem readItem)
@@ -40,10 +43,11 @@ namespace BusinessLogicLayer.DTOs
             this.Rating = readItem.Rating;
         }
 
-        public ReadItemDTO(ReadItem readItem, List<TagDTO> tags)
+        public ReadItemDTO(ReadItem readItem, List<TagDTO> tags, List<ChapterDTO> chapters)
             : this(readItem)
         {
             this.Tags = tags;
+            this.Chapters = chapters;
         }
     }
 }

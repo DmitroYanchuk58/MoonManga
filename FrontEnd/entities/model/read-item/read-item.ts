@@ -1,5 +1,5 @@
 import { ReadItemType } from "./read-item-type";
-import { Tag } from "../tag/tag";
+import { type Tag } from "../tag/tag";
 
 export interface ReadItem {
   id: string;

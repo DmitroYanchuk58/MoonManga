@@ -35,11 +35,21 @@ namespace BusinessLogicLayer.Services
             await _crud.CreateAsync(item);
         }
 
-        public async Task<ReadItemDTO> GetReadItemByIdAsync(Guid id, bool includeTags = false)
+        public async Task<ReadItemDTO> GetReadItemByIdAsync(Guid id, bool includeTags = false, bool includeChapters = false)
         {
+            if (includeChapters && includeTags)
+            {
+                var result = await GetReadItemFullInfo(id);
+                return result;
+            }
             if (includeTags)
             {
                 var result = await GetReadItemWithTagsAsync(id);
+                return result;
+            }
+            if (includeChapters)
+            {
+                var result = await GetReadItemFullInfo(id);
                 return result;
             }
             return await _crud.GetByIdAsync(id);
@@ -99,6 +109,11 @@ namespace BusinessLogicLayer.Services
         private async Task<ReadItemDTO> GetReadItemWithTagsAsync(Guid idReadItem)
         {
             return await _joinProvider.GetReadItemWithTagAsync(idReadItem);
+        }
+
+        private async Task<ReadItemDTO> GetReadItemFullInfo(Guid idReadTeam)
+        {
+            return await _joinProvider.GetReadItemFullInfo(idReadTeam);
         }
     }
 }
