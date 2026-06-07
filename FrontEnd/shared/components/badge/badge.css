@@ -1,10 +1,12 @@
 .ui-badge {
   width: fit-content;
+  max-height: 40px;
   display: flex;
   align-items: center;
   justify-content: center;
   background-color: var(--second-color);
   color: var(--text-color);
+  margin: 5px 0;
   padding: 6px 16px;
   border-radius: 8px;
   font-size: 18px;

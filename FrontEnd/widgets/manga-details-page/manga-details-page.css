@@ -1,62 +1,82 @@
 .full-block {
   width: 100%;
-  height: 50%;
+  height: 100vh;
   position: relative;
+  display: flex;
+  flex-direction: column;
 }
+
 .promo {
   width: 100%;
-  height: 40%;
+  height: 20%;
   overflow: hidden;
 }
+
 .promo img {
   width: 100%;
   height: 100%;
+  object-fit: cover;
 }
+
 .manga-image {
-  height: 50%;
-  width: 12%;
+  height: 200px;
+  width: 140px;
   position: absolute;
-  top: 5%;
+  top: 12%;
   left: 10%;
+  z-index: 10;
   border-radius: 10px;
   overflow: hidden;
   border: 1px solid var(--text-color);
 }
+
 .manga-image img {
   width: 100%;
   height: 100%;
+  object-fit: cover;
 }
+
 .information {
   width: 100%;
-  height: 60%;
   padding: 0 10%;
   display: flex;
   flex-direction: column;
+  margin-top: 20px;
 }
+
 .name {
-  width: 84%;
-  margin-left: 15%;
-  height: 25%;
+  width: 100%;
+  padding-left: 160px;
   color: var(--text-color);
-  display: flex;
-  align-items: center;
 }
+
 .name h1 {
-  margin-left: 2%;
   font-size: 36px;
   font-weight: 600;
+  margin: 0;
 }
+
 .tags {
-  margin-top: 1%;
-  margin-bottom: 1%;
+  padding-left: 160px;
+  margin-top: 10px;
+  margin-bottom: 10px;
   width: 100%;
-  height: 10%;
   display: flex;
-  gap: 1%;
+  flex-wrap: wrap;
+  gap: 8px;
 }
+
 .description {
-  flex-grow: 1;
   color: var(--text-color);
   font-size: 18px;
   line-height: 1.4;
+  margin-bottom: 20px;
+}
+
+.chapters {
+  flex-grow: 1;
+  min-height: 0;
+  margin-left: 10%;
+  margin-right: 10%;
+  margin-bottom: 20px;
 }
