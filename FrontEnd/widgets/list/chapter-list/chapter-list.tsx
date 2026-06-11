@@ -1,4 +1,4 @@
-import { Chapter } from "../../../entities/model/chapter/chapter";
+import { type Chapter } from "../../../entities/model/chapter/chapter";
 import "./chapter-list.css";
 
 interface ChapterListProps {

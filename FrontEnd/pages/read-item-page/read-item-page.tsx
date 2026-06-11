@@ -3,7 +3,6 @@ import { useEffect, useState } from "react";
 import { MangaDetailsPage } from "../../widgets/manga-details-page/manga-details-page";
 import { ReadItemApi } from "../../utils/api/read-item-api";
 import { type ReadItem } from "../../entities/model/read-item/read-item";
-import { Chapter } from "../../entities/model/chapter/chapter";
 import "./read-item-page.css";
 
 export const ReadItemPage = () => {

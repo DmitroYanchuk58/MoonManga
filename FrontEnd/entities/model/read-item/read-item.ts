@@ -1,6 +1,6 @@
 import { ReadItemType } from "./read-item-type";
 import { type Tag } from "../tag/tag";
-import { Chapter } from "../chapter/chapter";
+import { type Chapter } from "../chapter/chapter";
 
 export interface ReadItem {
   id: string;
