@@ -35,7 +35,7 @@ namespace API.Controllers
         {
             var item = new ReadItemTagDTO
             {
-                Id = Guid.NewGuid(),
+                Id  = request.Id,
                 IdReadItem = request.IdReadItem,
                 IdTag = request.IdTag
             };

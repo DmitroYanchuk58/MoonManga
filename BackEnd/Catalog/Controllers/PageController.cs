@@ -35,6 +35,7 @@ namespace API.Controllers
         {
             var page = new PageDTO  
             {
+                Id = request.Id,
                 Order = request.Order,
                 Image = request.Image   
             };

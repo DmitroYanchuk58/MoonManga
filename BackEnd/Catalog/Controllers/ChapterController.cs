@@ -35,6 +35,7 @@ namespace API.Controllers
         {
             var chapter = new ChapterDTO
             {
+                Id = request.Id,
                 Order = request.Order,
                 Volume = request.Volume,
                 Title = request.Title,

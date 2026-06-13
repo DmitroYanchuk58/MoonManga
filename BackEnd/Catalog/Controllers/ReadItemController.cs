@@ -84,6 +84,7 @@ namespace API.Controllers
         {
             var item = new ReadItemDTO
             {
+                Id = request.Id,
                 Title = request.Title,
                 Type = request.Type,
                 CoverImage = request.CoverImage,

@@ -4,6 +4,8 @@ namespace API.DTO
 {
     public class CreateReadItemDTO
     {
+        public Guid Id { get; set; }
+
         public string Title { get; set; }
 
         public ReadItemType Type { get; set; } 

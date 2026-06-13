@@ -35,6 +35,7 @@ namespace API.Controllers
         {
             var item = new TagDTO
             {
+                Id = request.Id,
                 Name = request.Tag
             };
             await _service.CreateTagAsync(item);
