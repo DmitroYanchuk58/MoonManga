@@ -11,5 +11,7 @@
         public Guid? IdReadItem { get; set; }
 
         public virtual ReadItem? ReadItem { get; set; }
+
+        public List<Page>? Pages { get; set; }
     }
 }

@@ -106,6 +106,12 @@ namespace DatabaseAccessLayer.DatabaseContext
                     .WithMany(e => e.Chapters)
                     .HasForeignKey(e => e.IdReadItem)
                     .IsRequired();
+
+            modelBuilder.Entity<Page>()
+                    .HasOne(e => e.Chapter)
+                    .WithMany(e => e.Pages)
+                    .HasForeignKey(e => e.IdChapter)
+                    .IsRequired();
         }
     }
 }

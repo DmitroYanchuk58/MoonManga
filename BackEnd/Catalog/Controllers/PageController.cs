@@ -37,7 +37,8 @@ namespace API.Controllers
             {
                 Id = request.Id != Guid.Empty ? request.Id : Guid.NewGuid(),
                 Order = request.Order,
-                Image = request.Image   
+                Image = request.Image,
+                IdChapter = request.IdChapter   
             };
             await _service.CreatePageAsync(page);
             return Ok(page);

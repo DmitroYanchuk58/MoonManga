@@ -13,19 +13,24 @@ namespace BusinessLogicLayer.DTOs
 
         public byte[] Image { get; set; }
 
+        public Guid IdChapter { get; set; }
+
         public PageDTO() : base() { }
 
-        public PageDTO(Guid id, int order, byte[] image) : this()
+        public PageDTO(Guid id, int order, byte[] image, Guid idChapter) : this()
         {
             Id = id;
             Order = order;
             Image = image;
+            IdChapter = idChapter;
         }
 
         public PageDTO(Page page) : base(page) 
         {
             this.Id = page.Id;
+            this.Order = page.Order;
             this.Image = page.Image;
+            this.IdChapter = page.IdChapter;
         }
     }
 }

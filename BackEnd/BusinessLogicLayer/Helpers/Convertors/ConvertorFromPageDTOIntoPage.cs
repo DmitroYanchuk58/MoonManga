@@ -14,7 +14,8 @@ namespace BusinessLogicLayer.Helpers.Convertors
             {
                 Id = dto.Id,
                 Order = dto.Order,
-                Image = dto.Image
+                Image = dto.Image,
+                IdChapter = dto.IdChapter,
             };
         }
     }

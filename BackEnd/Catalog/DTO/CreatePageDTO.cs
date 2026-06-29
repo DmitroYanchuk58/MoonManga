@@ -7,5 +7,7 @@
         public int Order { get; set; }
 
         public byte[] Image { get; set; }
+
+        public Guid IdChapter { get; set; }
     }
 }
