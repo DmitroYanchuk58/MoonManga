@@ -61,9 +61,6 @@ namespace DatabaseAccessLayer.DatabaseContext
 
                 entity.Property(b => b.Title)
                     .HasMaxLength(200);
-
-                entity.ToTable(t => t.HasCheckConstraint("CK_Chapter_Order_Min", "[Order] > 0"));
-                entity.ToTable(t => t.HasCheckConstraint("CK_Chapter_Volume_Min", "[Volume] > 0"));
             });
 
             modelBuilder.Entity<Page>(entity =>
