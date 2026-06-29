@@ -35,7 +35,7 @@ namespace API.Controllers
         {
             var chapter = new ChapterDTO
             {
-                Id = request.Id,
+                Id = request.Id != Guid.Empty ? request.Id : Guid.NewGuid(),
                 Order = request.Order,
                 Volume = request.Volume,
                 Title = request.Title,

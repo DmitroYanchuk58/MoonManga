@@ -35,7 +35,7 @@ namespace API.Controllers
         {
             var item = new TagDTO
             {
-                Id = request.Id,
+                Id = request.Id != Guid.Empty ? request.Id : Guid.NewGuid(),
                 Name = request.Tag
             };
             await _service.CreateTagAsync(item);

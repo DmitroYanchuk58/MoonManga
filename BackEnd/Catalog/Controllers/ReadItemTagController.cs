@@ -35,7 +35,7 @@ namespace API.Controllers
         {
             var item = new ReadItemTagDTO
             {
-                Id  = request.Id,
+                Id  = request.Id != Guid.Empty ? request.Id : Guid.NewGuid(),
                 IdReadItem = request.IdReadItem,
                 IdTag = request.IdTag
             };

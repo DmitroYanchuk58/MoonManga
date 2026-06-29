@@ -84,7 +84,7 @@ namespace API.Controllers
         {
             var item = new ReadItemDTO
             {
-                Id = request.Id,
+                Id = request.Id != Guid.Empty ? request.Id : Guid.NewGuid(),
                 Title = request.Title,
                 Type = request.Type,
                 CoverImage = request.CoverImage,

@@ -35,7 +35,7 @@ namespace API.Controllers
         {
             var page = new PageDTO  
             {
-                Id = request.Id,
+                Id = request.Id != Guid.Empty ? request.Id : Guid.NewGuid(),
                 Order = request.Order,
                 Image = request.Image   
             };
