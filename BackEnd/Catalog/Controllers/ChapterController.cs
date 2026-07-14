@@ -16,21 +16,21 @@ namespace API.Controllers
             _service = service;
         }
 
-        [HttpGet("GetChapters")]
+        [HttpGet]
         public async Task<IActionResult> GetChapters()
         {
             var chapters = await _service.GetAllChaptersAsync();
             return Ok(chapters);
         }
 
-        [HttpGet("GetChapter")]
+        [HttpGet("{id}")]
         public async Task<IActionResult> GetChapter(Guid id)
         {
             var chapter = await _service.GetChapterByIdAsync(id);
             return Ok(chapter);
         }
 
-        [HttpPost("CreateChapter")]
+        [HttpPost]
         public async Task<IActionResult> CreateChapter([FromBody] CreateChapterDTO request)
         {
             var chapter = new ChapterDTO
@@ -45,14 +45,14 @@ namespace API.Controllers
             return Ok(chapter);
         }
 
-        [HttpPut("UpdateChapter")]
+        [HttpPut]
         public async Task<IActionResult> UpdateChapter([FromBody] ChapterDTO chapter)
         {
             await _service.UpdateChapterAsync(chapter);
             return Ok();
         }
 
-        [HttpDelete("DeleteChapter")]
+        [HttpDelete]
         public async Task<IActionResult> DeleteChapter(Guid id)
         {
             await _service.DeleteChapterAsync(id);
