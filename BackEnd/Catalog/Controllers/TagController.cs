@@ -50,15 +50,15 @@ namespace API.Controllers
             return Ok();
         }
 
-        [HttpDelete]
+        [HttpDelete("{id:guid}")]
         public async Task<IActionResult> DeleteTag(Guid id)
         {
             await _service.DeleteTagAsync(id);
             return Ok();
         }
 
-        [HttpGet]
-        public async Task<IActionResult> GetTagByName(string name)
+        [HttpGet("by-name")]
+        public async Task<IActionResult> GetTagByName([FromQuery]string name)
         {
             var tags = await _service.GetTagByNameAsync(name);
             return Ok(tags);

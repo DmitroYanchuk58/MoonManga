@@ -51,7 +51,7 @@ namespace API.Controllers
             return Ok();
         }
 
-        [HttpDelete]
+        [HttpDelete("{id:guid}")]
         public async Task<IActionResult> DeleteReadItemTag(Guid id)
         {
             await _service.DeleteReadItemTagAsync(id);

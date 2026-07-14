@@ -9,77 +9,66 @@ namespace API.Controllers
     [Route("api/[controller]")]
     public class ReadItemController : ControllerBase
     {
-        private IReadItemService _service;
+        private readonly IReadItemService _service;
 
         public ReadItemController(IReadItemService service)
         {
             _service = service;
         }
 
-        [HttpGet("GetReadItems")]
-        public async Task<IActionResult> GetReadItems()
+        [HttpGet]
+        public async Task<IActionResult> GetReadItems(
+            [FromQuery] string? title = null,
+            [FromQuery] int? page = null,
+            [FromQuery] int? pageSize = null,
+            [FromQuery] string? sortBy = null)
         {
+            if (!string.IsNullOrEmpty(title))
+            {
+                var searchResults = await _service.FindReadItemsByTitle(title);
+                return Ok(searchResults);
+            }
+
+            if (page.HasValue && pageSize.HasValue)
+            {
+                if (sortBy == "rating_desc")
+                {
+                    return Ok(await _service.GetTopRatedReadItems(page.Value, pageSize.Value));
+                }
+                if (sortBy == "rating_asc")
+                {
+                    return Ok(await _service.GetLessRatedReadItems(page.Value, pageSize.Value));
+                }
+
+                return Ok(await _service.GetReadItemCollection(page.Value, pageSize.Value));
+            }
+
             var readItems = await _service.GetAllReadItemsAsync();
             return Ok(readItems);
         }
 
-        [HttpGet("GetReadItem")]
-        public async Task<IActionResult> GetReadItem(Guid id)
+        [HttpGet("{id:guid}")] 
+        public async Task<IActionResult> GetReadItem(
+            Guid id,
+            [FromQuery] bool includeTags = false,
+            [FromQuery] bool includeChapters = false)
         {
-            var readItem = await _service.GetReadItemByIdAsync(id);
+            var readItem = await _service.GetReadItemByIdAsync(id, includeTags, includeChapters);
+            if (readItem == null)
+            {
+                return NotFound();
+            }
             return Ok(readItem);
         }
 
-        [HttpGet("GetReadItemWithTags")]
-        public async Task<IActionResult> GetReadItemWithTags(Guid id)
-        {
-            var readItem = await _service.GetReadItemByIdAsync(id, includeTags: true);
-            return Ok(readItem);
-        }
-
-        [HttpGet("GetReadItemFullInfo")]
-        public async Task<IActionResult> GetReadItemsFullInfo(Guid id)
-        {
-            var readItems = await _service.GetReadItemByIdAsync(id, includeTags: true, includeChapters: true);
-            return Ok(readItems);
-        }
-
-        [HttpGet("GetReadItemsCollection")]
-        public async Task<IActionResult> GetReadItemsCollection(int collectionNumber, int collectionSize)
-        {
-            var readItems = await _service.GetReadItemCollection(collectionNumber, collectionSize);
-            return Ok(readItems);
-        }
-
-        [HttpGet("GetCountReadItems")]
+        [HttpGet("count")]
         public async Task<IActionResult> GetCountReadItems()
         {
             var count = await _service.GetTotalCountAsync();
             return Ok(count);
         }
 
-        [HttpGet("FindReadItemByTitle")]
-        public async Task<IActionResult> FindReadItemByTitle(string title)
-        {
-            var readItems = await _service.FindReadItemsByTitle(title);
-            return Ok(readItems);
-        }
-
-        [HttpGet("GetTopRatedReadItems")]
-        public async Task<IActionResult> GetTopRatedReadItems(int collectionNumber, int collectionSize)
-        {
-            var readItems = await _service.GetTopRatedReadItems(collectionNumber, collectionSize);
-            return Ok(readItems);
-        }
-
-        [HttpGet("GetLessRatedReadItems")]
-        public async Task<IActionResult> GetLessRatedReadItems(int collectionNumber, int collectionSize)
-        {
-            var readItems = await _service.GetLessRatedReadItems(collectionNumber, collectionSize);
-            return Ok(readItems);
-        }
-
-        [HttpPost("CreateReadItem")]
+        [HttpPost]
         public async Task<IActionResult> CreateReadItem([FromBody] CreateReadItemDTO request)
         {
             var item = new ReadItemDTO
@@ -95,14 +84,14 @@ namespace API.Controllers
             return Ok(item);
         }
 
-        [HttpPut("UpdateReadItem")]
+        [HttpPut]
         public async Task<IActionResult> UpdateReadItem([FromBody] ReadItemDTO item)
         {
             await _service.UpdateReadItemAsync(item);
             return Ok();
         }
 
-        [HttpDelete("DeleteReadItem")]
+        [HttpDelete("{id:guid}")]
         public async Task<IActionResult> DeleteReadItem(Guid id)
         {
             await _service.DeleteReadItemAsync(id);

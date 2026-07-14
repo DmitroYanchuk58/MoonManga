@@ -52,7 +52,7 @@ namespace API.Controllers
             return Ok();
         }
 
-        [HttpDelete]
+        [HttpDelete("{id:guid}")]
         public async Task<IActionResult> DeleteChapter(Guid id)
         {
             await _service.DeleteChapterAsync(id);
