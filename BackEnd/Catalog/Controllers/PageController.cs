@@ -16,21 +16,21 @@ namespace API.Controllers
             _service = pageService;
         }
 
-        [HttpGet("GetPages")]
+        [HttpGet]
         public async Task<IActionResult> GetPages()
         {
             var pages = await _service.GetAllPagesAsync();
             return Ok(pages);
         }
 
-        [HttpGet("GetPage")]
+        [HttpGet("{id}")]
         public async Task<IActionResult> GetPage(Guid id)
         {
             var page = await _service.GetPageByIdAsync(id);
             return Ok(page);
         }
 
-        [HttpPost("CreatePage")]
+        [HttpPost]
         public async Task<IActionResult> CreatePage([FromBody]CreatePageDTO request)
         {
             var page = new PageDTO  
@@ -44,14 +44,14 @@ namespace API.Controllers
             return Ok(page);
         }
 
-        [HttpPut("UpdatePage")]
+        [HttpPut]
         public async Task<IActionResult> UpdatePage([FromBody] PageDTO page)
         {
             await _service.UpdatePageAsync(page);
             return Ok();
         }
 
-        [HttpDelete("DeletePage")]
+        [HttpDelete]
         public async Task<IActionResult> DeletePage(Guid id)
         {
             await _service.DeletePageAsync(id);
