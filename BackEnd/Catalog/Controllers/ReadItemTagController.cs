@@ -16,21 +16,21 @@ namespace API.Controllers
             _service = service;
         }
 
-        [HttpGet("GetReadItemTag")]
+        [HttpGet("{id}")]
         public async Task<IActionResult> GetReadItemTag(Guid id)
         {
             var readItem = await _service.GetReadItemTagByIdAsync(id);
             return Ok(readItem);
         }
 
-        [HttpGet("GetReadItemTags")]
+        [HttpGet]
         public async Task<IActionResult> GetReadItemTags()
         {
             var tags = await _service.GetAllReadItemTagsAsync();
             return Ok(tags);
         }
 
-        [HttpPost("CreateReadItemTag")]
+        [HttpPost]
         public async Task<IActionResult> CreateReadItemTag([FromBody] CreateReadItemTagDTO request)
         {
             var item = new ReadItemTagDTO
@@ -44,14 +44,14 @@ namespace API.Controllers
         }
 
 
-        [HttpPut("UpdateReadItemTag")]
+        [HttpPut]
         public async Task<IActionResult> UpdateReadItemTag([FromBody] ReadItemTagDTO readItemTag)
         {
             await _service.UpdateReadItemTagAsync(readItemTag);
             return Ok();
         }
 
-        [HttpDelete("DeleteReadItemTag")]
+        [HttpDelete]
         public async Task<IActionResult> DeleteReadItemTag(Guid id)
         {
             await _service.DeleteReadItemTagAsync(id);
