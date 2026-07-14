@@ -43,5 +43,11 @@ namespace BusinessLogicLayer.Services
         {
             await _crud.UpdateAsync(item);
         }
+
+        public async Task<List<ChapterDTO>> GetChaptersByReadItemIdAsync(Guid readItemId)
+        {
+            var chapters = await _crud.GetAllAsync();
+            return chapters.Where(chapter => chapter.IdReadItem == readItemId).ToList();
+        }
     }
 }

@@ -10,6 +10,8 @@ namespace BusinessLogicLayer.Services.Interfaces
 
         public Task<List<ChapterDTO>> GetAllChaptersAsync();
 
+        public Task<List<ChapterDTO>> GetChaptersByReadItemIdAsync(Guid readItemId);
+
         public Task UpdateChapterAsync(ChapterDTO item);
 
         public Task DeleteChapterAsync(Guid id);

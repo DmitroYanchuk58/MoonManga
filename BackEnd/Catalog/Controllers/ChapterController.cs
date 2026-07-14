@@ -30,6 +30,13 @@ namespace API.Controllers
             return Ok(chapter);
         }
 
+        [HttpGet("by-read-item/{readItemId:guid}")]
+        public async Task<IActionResult> GetChaptersByReadItemId(Guid readItemId)
+        {
+            var chapters = await _service.GetChaptersByReadItemIdAsync(readItemId);
+            return Ok(chapters);
+        }
+
         [HttpPost]
         public async Task<IActionResult> CreateChapter([FromBody] CreateChapterDTO request)
         {
