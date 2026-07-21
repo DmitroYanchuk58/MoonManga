@@ -33,14 +33,17 @@ namespace API.Controllers
             {
                 if (sortBy == "rating_desc")
                 {
-                    return Ok(await _service.GetTopRatedReadItems(page.Value, pageSize.Value));
+                    var descRatingResult = await _service.GetTopRatedReadItems(page.Value, pageSize.Value);
+                    return Ok(descRatingResult);
                 }
                 if (sortBy == "rating_asc")
                 {
-                    return Ok(await _service.GetLessRatedReadItems(page.Value, pageSize.Value));
+                    var ascRatingResult = await _service.GetLessRatedReadItems(page.Value, pageSize.Value);
+                    return Ok(ascRatingResult);
                 }
 
-                return Ok(await _service.GetReadItemCollection(page.Value, pageSize.Value));
+                var result = await _service.GetReadItemCollection(page.Value, pageSize.Value);
+                return Ok(result);
             }
 
             var readItems = await _service.GetAllReadItemsAsync();

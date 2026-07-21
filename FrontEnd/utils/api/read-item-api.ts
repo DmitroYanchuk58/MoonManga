@@ -8,47 +8,41 @@ export const ReadItemApi = {
   },
 
   getCollection: async (
-    collectionNumber: number,
-    collectionSize: number,
+    page: number,
+    pageSize: number,
   ): Promise<ReadItem[]> => {
-    const response = await api.get<ReadItem[]>(
-      "/ReadItem/GetReadItemsCollection",
-      {
-        params: {
-          collectionNumber,
-          collectionSize,
-        },
+    const response = await api.get<ReadItem[]>("/ReadItem", {
+      params: {
+        page,
+        pageSize,
       },
-    );
+    });
     return response.data;
   },
 
   getReadItemsCount: async () => {
-    const response = await api.get<number>("/ReadItem/GetCountReadItems");
+    const response = await api.get<number>("/ReadItem/count");
     return response.data;
   },
 
   getReadItem: async (id: string): Promise<ReadItem> => {
-    const response = await api.get<ReadItem>("/ReadItem/GetReadItem", {
+    const response = await api.get<ReadItem>("/ReadItem", {
       params: { id },
     });
     return response.data;
   },
 
   getFullInfoReadItem: async (id: string): Promise<ReadItem> => {
-    const response = await api.get<ReadItem>("/ReadItem/GetReadItemFullInfo", {
+    const response = await api.get<ReadItem>("/ReadItem", {
       params: { id },
     });
     return response.data;
   },
 
   findReadItemByTitle: async (title: string): Promise<ReadItem[]> => {
-    const response = await api.get<ReadItem[]>(
-      "/ReadItem/FindReadItemByTitle",
-      {
-        params: { title },
-      },
-    );
+    const response = await api.get<ReadItem[]>("/ReadItem", {
+      params: { title },
+    });
     return response.data;
   },
 };

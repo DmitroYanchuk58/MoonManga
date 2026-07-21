@@ -45,11 +45,6 @@ namespace BusinessLogicLayer.Features.Join
                 throw new KeyNotFoundException($"ReadItem with ID '{idReadItem}' was not found.");
             }
 
-            if (tags == null || tags.Count == 0)
-            {
-                throw new KeyNotFoundException($"No tags found for ReadItem with ID '{idReadItem}'.");
-            }
-
             var entityDto = _convertorReadItem.ConvertToDto(entity);
 
             entityDto.Tags = tags.Select(tag => _convertorReadItemTag.ConvertToDto(tag)).ToList();
@@ -72,11 +67,6 @@ namespace BusinessLogicLayer.Features.Join
             if (entity == null)
             {
                 throw new KeyNotFoundException($"ReadItem with ID '{idReadItem}' was not found.");
-            }
-
-            if (chapters == null || chapters.Count == 0)
-            {
-                throw new KeyNotFoundException($"No tags found for ReadItem with ID '{idReadItem}'.");
             }
 
             var entityDto = _convertorReadItem.ConvertToDto(entity);

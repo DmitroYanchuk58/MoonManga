@@ -1,5 +1,4 @@
 ﻿using BusinessLogicLayer.DTOs;
-using BusinessLogicLayer.Features;
 using BusinessLogicLayer.Features.CollectionProvider;
 using BusinessLogicLayer.Features.Crud;
 using BusinessLogicLayer.Features.ICrud;
@@ -49,7 +48,7 @@ namespace BusinessLogicLayer.Services
             }
             if (includeChapters)
             {
-                var result = await GetReadItemFullInfo(id);
+                var result = await GetReadItemWithChaptersAsync(id);
                 return result;
             }
             return await _crud.GetByIdAsync(id);
@@ -109,6 +108,11 @@ namespace BusinessLogicLayer.Services
         private async Task<ReadItemDTO> GetReadItemWithTagsAsync(Guid idReadItem)
         {
             return await _joinProvider.GetReadItemWithTagAsync(idReadItem);
+        }
+
+        private async Task<ReadItemDTO> GetReadItemWithChaptersAsync(Guid idReadItem)
+        {
+            return await _joinProvider.GetReadItemWithChaptersAsync(idReadItem);
         }
 
         private async Task<ReadItemDTO> GetReadItemFullInfo(Guid idReadTeam)
