@@ -6,7 +6,7 @@ import { MangaCollectionManager } from "../../features/MangaCatalogManager";
 import type { ReadItem } from "../../entities/model/read-item/read-item";
 import "./read-items-page.css";
 
-export const ReadItemsPage = () => {
+export const CollectionReadItemsPage = () => {
   const collectionManager = useMemo(() => new MangaCollectionManager(), []);
   const [readItems, setReadItems] = useState<ReadItem[]>([]);
   const [currentPage, setCurrentPage] = useState(1);

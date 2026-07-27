@@ -4,7 +4,7 @@ import { ReadItemApi } from "../utils/api/read-item-api";
 export class MangaCollectionManager {
   private items: ReadItem[] = [];
   private pageNumber: number = 1;
-  private maxPageNumber: number = 101;
+  private maxPageNumber: number = 1;
   private minPageNumber: number = 1;
   private countReadItemsOnPage: number = 30;
 
@@ -27,31 +27,38 @@ export class MangaCollectionManager {
     }
   }
 
-  public getCurrentPageNumber() {
+  public getCurrentPageNumber(): number {
     return this.pageNumber;
   }
 
-  public setCurrentPageNumber(numberPage: number) {
+  public setCurrentPageNumber(numberPage: number): void {
     this.pageNumber = numberPage;
   }
 
-  public async find(title: string) {
-    const data = await ReadItemApi.findReadItemByTitle(title);
-    return data;
+  public async find(title: string): Promise<ReadItem[]> {
+    return await ReadItemApi.findReadItemByTitle(title);
   }
 
   public async loadItems(): Promise<void> {
-    const data = await ReadItemApi.getCollection(
-      this.pageNumber,
-      this.countReadItemsOnPage,
-    );
-    this.items = data || [];
+    try {
+      // Execute both requests concurrently to eliminate waterfall delays
+      const [data, count] = await Promise.all([
+        ReadItemApi.getCollection(this.pageNumber, this.countReadItemsOnPage),
+        ReadItemApi.getReadItemsCount(),
+      ]);
 
-    const count = await ReadItemApi.getReadItemsCount();
-    this.maxPageNumber = Math.ceil(count / this.countReadItemsOnPage) || 1;
+      this.items = data || [];
+      this.maxPageNumber = Math.max(
+        1,
+        Math.ceil((count || 0) / this.countReadItemsOnPage),
+      );
+    } catch (error) {
+      console.error("Failed to load manga collection:", error);
+      this.items = [];
+    }
   }
 
-  public getPageMaxNumber() {
+  public getPageMaxNumber(): number {
     return this.maxPageNumber;
   }
 }
