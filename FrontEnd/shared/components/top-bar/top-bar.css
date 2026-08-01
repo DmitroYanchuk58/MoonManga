@@ -1,0 +1,16 @@
+.top-bar {
+  height: 60px;
+  width: 100%;
+  background-color: black;
+  opacity: 0.6;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  padding: 30px;
+}
+.back-btn {
+  height: 100%;
+  aspect-ratio: 1;
+  background-color: aliceblue;
+}

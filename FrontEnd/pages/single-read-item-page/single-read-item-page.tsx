@@ -1,11 +1,16 @@
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { MangaDetailsPage } from "../../widgets/manga-details-page/manga-details-page";
-import { ReadItemApi } from "../../utils/api/read-item-api";
-import { type ReadItem } from "../../entities/model/read-item/read-item";
-import "./read-item-page.css";
 
-export const ReadItemPage = () => {
+import { MangaDetailsPage } from "../../widgets/manga-details-page/manga-details-page";
+import { TopBar } from "../../shared/components/top-bar/top-bar";
+
+import { ReadItemApi } from "../../utils/api/read-item-api";
+
+import { type ReadItem } from "../../entities/model/read-item/read-item";
+
+import "./single-read-item-page.css";
+
+export const SingleReadItemPage = () => {
   const { id } = useParams<{ id: string }>();
   const [readItem, setReadItem] = useState<ReadItem | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
@@ -33,6 +38,7 @@ export const ReadItemPage = () => {
 
   return (
     <div className="read-item-page">
+      <TopBar />
       <MangaDetailsPage readItem={readItem} />
     </div>
   );
