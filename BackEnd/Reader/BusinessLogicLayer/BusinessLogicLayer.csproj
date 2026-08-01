@@ -6,4 +6,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\DatabaseLogicLayer\DatabaseLogicLayer.csproj" />
+  </ItemGroup>
+
 </Project>
