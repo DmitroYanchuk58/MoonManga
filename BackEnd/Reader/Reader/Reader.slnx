@@ -1,5 +1,6 @@
 <Solution>
-  <Project Path="../BusinessLogicLayer/BusinessLogicLayer.csproj" />
-  <Project Path="../DatabaseLogicLayer/DatabaseLogicLayer.csproj" />
-  <Project Path="../PresentationLayer/PresentationLayer.csproj" />
+  <Project Path="E:/Code/VisualStudioCode/Front/Unfinished/MoonManga/BackEnd/Reader/BusinessLogicLayer/BusinessLogicLayer.csproj" />
+  <Project Path="E:/Code/VisualStudioCode/Front/Unfinished/MoonManga/BackEnd/Reader/DatabaseLogicLayer/DatabaseLogicLayer.csproj" />
+  <Project Path="E:/Code/VisualStudioCode/Front/Unfinished/MoonManga/BackEnd/Reader/PresentationLayer/PresentationLayer.csproj" />
+  <Project Path="E:/Code/VisualStudioCode/Front/Unfinished/MoonManga/BackEnd/Reader/Reader/Tests/Tests.csproj" Id="02a5337e-f547-42ee-ad9a-ff53e8dba721" />
 </Solution>
