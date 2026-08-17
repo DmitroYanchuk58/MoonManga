@@ -10,6 +10,8 @@ namespace BusinessLogicLayer.Services
 
         public Task<List<Entity>> GetAllAsync();
 
+        public Task<List<Page_DTO>> GetAllByChapterId(Guid idChapter);
+
         public Task UpdateAsync(Entity item);
 
         public Task DeleteAsync(Guid id);

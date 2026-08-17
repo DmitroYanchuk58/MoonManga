@@ -54,6 +54,18 @@ namespace BusinessLogicLayer.Services
             return dbPage is null ? null : new Page_DTO(dbPage);
         }
 
+        public async Task<List<Page_DTO>> GetAllByChapterId(Guid idChapter)
+        {
+            if (idChapter == Guid.Empty)
+            {
+                throw new ArgumentException("Chapter ID cannot be an empty GUID.", nameof(idChapter));
+            }
+
+            var dbPages = await _pageRepository.GetByConditionAsync(p => p.IdChapter == idChapter);
+
+            return dbPages.Select(page => new Page_DTO(page)).ToList();
+        }
+
         public async Task UpdateAsync(Page_DTO item)
         {
             ArgumentNullException.ThrowIfNull(item);
