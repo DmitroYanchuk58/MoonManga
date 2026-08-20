@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace BusinessLogicLayer.Services
 {
-    public class PageService : IService<Page_DTO>
+    public class PageService : IPageService
     {
         private readonly ICRUD_Repository<Page> _pageRepository;
 

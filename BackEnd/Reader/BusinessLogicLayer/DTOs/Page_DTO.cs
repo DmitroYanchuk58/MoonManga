@@ -10,6 +10,8 @@ namespace BusinessLogicLayer.DTOs
 
         public Guid IdChapter { get; set; }
 
+        public Page_DTO() { }
+
         public Page_DTO(Page page)
         {
             Id = page.Id;

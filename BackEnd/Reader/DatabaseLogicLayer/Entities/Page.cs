@@ -6,6 +6,6 @@
 
         public byte[] Image { get; set; }
 
-        public Guid IdChapter { get; set; } = 
+        public Guid IdChapter { get; set; }  
     }
 }
