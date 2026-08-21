@@ -6,7 +6,7 @@ namespace BusinessLogicLayer.DTOs
     {
         public int Order { get; set; }
 
-        public byte[] Image { get; set; }
+        public string StorageKey { get; set; }
 
         public Guid IdChapter { get; set; }
 
@@ -16,7 +16,7 @@ namespace BusinessLogicLayer.DTOs
         {
             Id = page.Id;
             Order = page.Order;
-            Image = page.Image;
+            StorageKey = page.StorageKey;
             IdChapter = page.IdChapter;
         }
 
@@ -26,7 +26,7 @@ namespace BusinessLogicLayer.DTOs
             {
                 Id = this.Id,
                 Order = this.Order,
-                Image = this.Image,
+                StorageKey = this.StorageKey,
                 IdChapter = this.IdChapter
             };
         }

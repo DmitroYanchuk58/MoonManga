@@ -8,10 +8,10 @@ namespace PresentationLayer.DTOs
 
         public int Order { get; set; }
 
-        public byte[] Image { get; set; }
+        public string StorageKey { get; set; }
 
         public Guid IdChapter { get; set; }
 
-        public Page_DTO GetPageDTO() => new Page_DTO() { Id = this.Id, IdChapter = this.IdChapter, Image = this.Image, Order = this.Order};
+        public Page_DTO GetPageDTO() => new Page_DTO() { Id = this.Id, IdChapter = this.IdChapter, StorageKey = this.StorageKey, Order = this.Order};
     }
 }

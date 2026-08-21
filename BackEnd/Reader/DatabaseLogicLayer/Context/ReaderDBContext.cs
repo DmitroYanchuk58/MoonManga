@@ -21,7 +21,6 @@ namespace DatabaseAccessLayer.DatabaseContext
                 entity.ToTable("Pages", t =>
                 {
                     t.HasCheckConstraint("CK_Page_Order_Min", "[Order] > 0");
-                    t.HasCheckConstraint("CK_Page_Image_NotEmpty", "Image IS NOT NULL AND DATALENGTH(Image) > 0");
                 });
             });
         }

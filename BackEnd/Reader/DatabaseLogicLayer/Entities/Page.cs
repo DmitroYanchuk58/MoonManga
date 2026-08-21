@@ -4,7 +4,7 @@
     {
         public int Order { get; set; }
 
-        public byte[] Image { get; set; }
+        public string StorageKey { get; set; } = string.Empty;
 
         public Guid IdChapter { get; set; }  
     }
