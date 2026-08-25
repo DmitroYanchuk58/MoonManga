@@ -1,6 +1,7 @@
 ﻿using BusinessLogicLayer.DTOs;
 using DatabaseAccessLayer.DatabaseContext;
 using DatabaseAccessLayer.Repositories;
+using DatabaseAccessLayer.Services;
 using DatabaseLogicLayer.Entities;
 using DatabaseLogicLayer.Repositories;
 using System;
@@ -14,27 +15,55 @@ namespace BusinessLogicLayer.Services
     public class PageService : IPageService
     {
         private readonly ICRUD_Repository<Page> _pageRepository;
+        private readonly IStorageService _storageService;
+        private const string BucketName = "manga-pages";
+        private const string BaseStorageUrl = "http://localhost:9000";
 
-        public PageService(ReaderDBContext context)
+        public PageService(ICRUD_Repository<Page> pageRepository, IStorageService storageService)
         {
-            _pageRepository = new CRUD_Repository<Page>(context);
+            _pageRepository = pageRepository;
+            _storageService = storageService;
         }
 
-        public async Task CreateAsync(Page_DTO item)
+        public async Task<PageResponseDto> CreateAsync(CreatePageDto dto)
         {
-            ArgumentNullException.ThrowIfNull(item);
+            var extension = Path.GetExtension(dto.FileName).ToLowerInvariant();
+            var storageKey = $"chapters/{dto.ChapterId}/page_{dto.Order:D3}_{Guid.NewGuid():N}{extension}";
 
-            await _pageRepository.CreateAsync(item.GetPage());
-        }
+            await _storageService.UploadFileAsync(BucketName, storageKey, dto.FileStream, dto.ContentType);
 
-        public async Task DeleteAsync(Guid id)
-        {
-            if (id == Guid.Empty)
+            try
             {
-                throw new ArgumentException("Page ID cannot be an empty GUID.", nameof(id));
+                var page = new Page
+                {
+                    Id = Guid.NewGuid(),
+                    IdChapter = dto.ChapterId,
+                    Order = dto.Order,
+                    StorageKey = storageKey
+                };
+
+                await _pageRepository.CreateAsync(page);
+
+                return MapToDto(page);
             }
+            catch
+            {
+                await _storageService.DeleteFileAsync(BucketName, storageKey);
+                throw;
+            }
+        }
+
+        public async Task<bool> DeleteAsync(Guid id)
+        {
+            var page = await _pageRepository.GetByIdAsync(id);
+            if (page == null)
+                return false;
 
             await _pageRepository.DeleteAsync(id);
+
+            await _storageService.DeleteFileAsync(BucketName, page.StorageKey);
+
+            return true;
         }
 
         public async Task<List<Page_DTO>> GetAllAsync()
@@ -43,15 +72,10 @@ namespace BusinessLogicLayer.Services
             return dbPages.Select(page => new Page_DTO(page)).ToList();
         }
 
-        public async Task<Page_DTO?> GetByIdAsync(Guid id)
+        public async Task<PageResponseDto?> GetByIdAsync(Guid id)
         {
-            if (id == Guid.Empty)
-            {
-                throw new ArgumentException("Page ID cannot be an empty GUID.", nameof(id));
-            }
-
-            var dbPage = await _pageRepository.GetByIdAsync(id);
-            return dbPage is null ? null : new Page_DTO(dbPage);
+            var page = await _pageRepository.GetByIdAsync(id);
+            return page == null ? null : MapToDto(page);
         }
 
         public async Task<List<Page_DTO>> GetAllByChapterId(Guid idChapter)
@@ -66,11 +90,52 @@ namespace BusinessLogicLayer.Services
             return dbPages.Select(page => new Page_DTO(page)).ToList();
         }
 
-        public async Task UpdateAsync(Page_DTO item)
+        public async Task<PageResponseDto> UpdateAsync(UpdatePageDto dto)
         {
-            ArgumentNullException.ThrowIfNull(item);
+            var page = await _pageRepository.GetByIdAsync(dto.PageId);
+            if (page == null)
+                throw new KeyNotFoundException($"Page with ID {dto.PageId} not found.");
 
-            await _pageRepository.UpdateAsync(item.GetPage());
+            string? oldStorageKey = null;
+
+            if (dto.NewFileStream != null && !string.IsNullOrWhiteSpace(dto.NewFileName))
+            {
+                var extension = Path.GetExtension(dto.NewFileName).ToLowerInvariant();
+                var newStorageKey = $"chapters/{page.IdChapter}/page_{dto.Order:D3}_{Guid.NewGuid():N}{extension}";
+
+                await _storageService.UploadFileAsync(BucketName, newStorageKey, dto.NewFileStream, dto.NewContentType!);
+
+                oldStorageKey = page.StorageKey;
+                page.StorageKey = newStorageKey;
+            }
+
+            page.Order = dto.Order;
+
+            try
+            {
+                await _pageRepository.UpdateAsync(page);
+
+                if (oldStorageKey != null)
+                {
+                    await _storageService.DeleteFileAsync(BucketName, oldStorageKey);
+                }
+
+                return MapToDto(page);
+            }
+            catch
+            {
+                if (oldStorageKey != null)
+                {
+                    await _storageService.DeleteFileAsync(BucketName, page.StorageKey);
+                }
+                throw;
+            }
+        }
+
+        private static PageResponseDto MapToDto(Page page)
+        {
+            var url = $"{BaseStorageUrl}/{BucketName}/{page.StorageKey}";
+            return new PageResponseDto(page.Id, page.IdChapter, page.Order, page.StorageKey, url);
         }
     }
 }

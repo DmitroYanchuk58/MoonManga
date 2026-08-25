@@ -7,55 +7,54 @@ namespace PresentationLayer.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class PageController : ControllerBase
+    public class PagesController : ControllerBase
     {
-        private readonly IPageService _service;
+        private readonly IPageService _pageService;
 
-        public PageController(IPageService pageService)
+        public PagesController(IPageService pageService)
         {
-            _service = pageService;
-        }
-
-        [HttpGet]
-        public async Task<IActionResult> GetPages()
-        {
-            var pages = await _service.GetAllAsync();
-            return Ok(pages);
-        }
-
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetPage(Guid id)
-        {
-            var page = await _service.GetByIdAsync(id);
-            return Ok(page);
-        }
-
-        [HttpGet("chapter/{idChapter}")]
-        public async Task<IActionResult> GetPagesByIdChapter(Guid idChapter)
-        {
-            var pages = await _service.GetAllByChapterId(idChapter);
-            return Ok(pages);
+            _pageService = pageService;
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreatePage([FromBody]PageDTO page)
+        public async Task<IActionResult> Create([FromForm] Guid chapterId, [FromForm] int order, IFormFile file)
         {
-            await _service.CreateAsync(page.GetPageDTO());
-            return Ok(page);
+            await using var stream = file.OpenReadStream();
+            var dto = new CreatePageDto(chapterId, order, stream, file.FileName, file.ContentType);
+
+            var result = await _pageService.CreateAsync(dto);
+            return CreatedAtAction(nameof(GetById), new { id = result.Id }, result);
         }
 
-        [HttpPut]
-        public async Task<IActionResult> UpdatePage([FromBody] PageDTO page)
+        [HttpGet("{id:guid}")]
+        public async Task<IActionResult> GetById(Guid id)
         {
-            await _service.UpdateAsync(page.GetPageDTO());
-            return Ok();
+            var result = await _pageService.GetByIdAsync(id);
+            return result == null ? NotFound() : Ok(result);
+        }
+
+        [HttpGet("chapter/{chapterId:guid}")]
+        public async Task<IActionResult> GetAllByChapterId(Guid chapterId)
+        {
+            var result = await _pageService.GetAllByChapterId(chapterId);
+            return Ok(result);
+        }
+
+        [HttpPut("{id:guid}")]
+        public async Task<IActionResult> Update(Guid id, [FromForm] int order, IFormFile? file)
+        {
+            Stream? stream = file != null ? file.OpenReadStream() : null;
+            var dto = new UpdatePageDto(id, order, stream, file?.FileName, file?.ContentType);
+
+            var result = await _pageService.UpdateAsync(dto);
+            return Ok(result);
         }
 
         [HttpDelete("{id:guid}")]
-        public async Task<IActionResult> DeletePage(Guid id)
+        public async Task<IActionResult> Delete(Guid id)
         {
-            await _service.DeleteAsync(id);
-            return Ok();
+            var deleted = await _pageService.DeleteAsync(id);
+            return deleted ? NoContent() : NotFound();
         }
     }
 }
