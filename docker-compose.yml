@@ -1,0 +1,56 @@
+services:
+  db:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: db
+    environment:
+      - ACCEPT_EULA=Y
+      - MSSQL_SA_PASSWORD=Mj288==(K7xc
+    ports:
+      - "1433:1433"
+    volumes:
+      - sql_data:/var/opt/mssql
+
+  backend:
+    image: backend
+    build:
+      context: /BackEnd
+      dockerfile: Dockerfile
+    container_name: Backend
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_HTTP_PORTS=8081
+      - ConnectionStrings__MoonMangaDBConnection=Server=db;Database=CatalogDB;User Id=sa;Password=Mj288==(K7xc;TrustServerCertificate=True
+    ports:
+      - "8081:8081"
+    depends_on:
+      - db
+
+  frontend:
+    container_name: frontend
+    build:
+      context: /FrontEnd
+      dockerfile: Dockerfile
+      args:
+        - VITE_API_BASE_URL=http://localhost:8081/api
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
+
+  minio:
+    image: minio/minio:latest
+    container_name: minio
+    restart: unless-stopped
+    command: server /data --console-address ":9001"
+    environment:
+      - MINIO_ROOT_USER=minioadmin
+      - MINIO_ROOT_PASSWORD=minioadminpassword
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    volumes:
+      - minio_storage:/data
+
+volumes:
+  sql_data:
+  minio_storage:

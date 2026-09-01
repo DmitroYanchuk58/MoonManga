@@ -1,0 +1,21 @@
+.pagination-input {
+  width: 100%;
+  max-width: 50px;
+  height: 100%;
+  max-height: 50px;
+  text-align: center;
+  border: none;
+  border-radius: 4px;
+  background: var(--text-color);
+  color: var(--accent-color);
+  font-size: 20px;
+  outline: none;
+  font-family: inherit;
+  appearance: textfield;
+}
+
+.pagination-input::-webkit-outer-spin-button,
+.pagination-input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}

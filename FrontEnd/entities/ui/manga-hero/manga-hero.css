@@ -1,0 +1,75 @@
+.manga-hero {
+  position: relative;
+  width: 100%;
+}
+
+.manga-hero__banner-wrapper {
+  height: 240px;
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+  border-bottom: 2px solid #1e3a8a;
+}
+
+.manga-hero__banner-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: blur(12px);
+  transform: scale(1.1);
+  opacity: 0.6;
+}
+
+.manga-hero__overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(to bottom, transparent, #000);
+}
+
+.manga-hero__content {
+  position: relative;
+  padding: 0 40px;
+  margin-top: -80px;
+  display: flex;
+  align-items: flex-end;
+  gap: 24px;
+  z-index: 10;
+}
+
+.manga-hero__cover-wrapper {
+  position: relative;
+  width: 200px;
+  flex-shrink: 0;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8);
+}
+
+.manga-hero__cover-img {
+  width: 100%;
+  border-radius: 8px;
+  border: 2px solid #2d3748;
+  display: block;
+}
+
+.manga-hero__volume-tag {
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+  right: 10px;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(4px);
+  padding: 4px;
+  text-align: center;
+  border-radius: 4px;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.manga-hero__title {
+  font-size: 32px;
+  margin-bottom: 12px;
+  color: #fff;
+  font-weight: 800;
+}

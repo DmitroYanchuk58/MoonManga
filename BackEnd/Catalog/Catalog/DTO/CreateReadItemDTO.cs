@@ -1,0 +1,19 @@
+﻿using BusinessLogicLayer.DTOs.Enums;
+
+namespace API.DTO
+{
+    public class CreateReadItemDTO
+    {
+        public Guid Id { get; set; }
+
+        public string Title { get; set; }
+
+        public ReadItemType Type { get; set; } 
+
+        public string Description { get; set; }
+
+        public byte[] CoverImage { get; set; }
+
+        public float Rating { get; set; }
+    }
+}
