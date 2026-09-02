@@ -1,0 +1,48 @@
+{
+  "Logging": {
+    "LogLevel": {
+      "Default": "Information",
+      "Microsoft.AspNetCore": "Warning",
+      "Yarp": "Information"
+    }
+  },
+  "AllowedHosts": "*",
+  "ReverseProxy": {
+    "Routes": {
+      "catalog-route": {
+        "ClusterId": "catalog-cluster",
+        "Match": {
+          "Path": "/api/catalog/{**catch-all}"
+        },
+        "Transforms": [
+          { "PathRemovePrefix": "/api/catalog" }
+        ]
+      },
+      "reader-route": {
+        "ClusterId": "reader-cluster",
+        "Match": {
+          "Path": "/api/reader/{**catch-all}"
+        },
+        "Transforms": [
+          { "PathRemovePrefix": "/api/reader" }
+        ]
+      }
+    },
+    "Clusters": {
+      "catalog-cluster": {
+        "Destinations": {
+          "catalog": {
+            "Address": "http://catalog-service:8081"
+          }
+        }
+      },
+      "reader-cluster": {
+        "Destinations": {
+          "reader": {
+            "Address": "http://reader-service:8082"
+          }
+        }
+      }
+    }
+  }
+}

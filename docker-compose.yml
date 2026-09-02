@@ -10,12 +10,11 @@ services:
     volumes:
       - sql_data:/var/opt/mssql
 
-  backend:
-    image: backend
+  catalog-service:
     build:
-      context: /BackEnd
+      context: ./BackEnd/Catalog
       dockerfile: Dockerfile
-    container_name: Backend
+    container_name: catalog-service
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_HTTP_PORTS=8081
@@ -25,17 +24,49 @@ services:
     depends_on:
       - db
 
+  reader-service:
+    build:
+      context: ./BackEnd/Reader
+      dockerfile: Dockerfile
+    container_name: reader-service
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_HTTP_PORTS=8082
+      - Minio__ServiceUrl=http://minio:9000
+      - Minio__AccessKey=minioadmin
+      - Minio__SecretKey=minioadminpassword
+      - ConnectionStrings__MoonMangaDBConnection=Server=db;Database=CatalogDB;User Id=sa;Password=Mj288==(K7xc;TrustServerCertificate=True
+    ports:
+      - "8082:8082"
+    depends_on:
+      - db
+      - minio
+
+  gateway:
+    build:
+      context: ./BackEnd/Gateway
+      dockerfile: Dockerfile
+    container_name: gateway
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_HTTP_PORTS=5000
+    ports:
+      - "5000:5000"
+    depends_on:
+      - catalog-service
+      - reader-service
+
   frontend:
     container_name: frontend
     build:
-      context: /FrontEnd
+      context: ./FrontEnd
       dockerfile: Dockerfile
       args:
-        - VITE_API_BASE_URL=http://localhost:8081/api
+        - VITE_API_BASE_URL=http://localhost:5000/api
     ports:
       - "3000:80"
     depends_on:
-      - backend
+      - gateway
 
   minio:
     image: minio/minio:latest
